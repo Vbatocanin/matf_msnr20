@@ -53,9 +53,9 @@
 
 \begin{document}
 
-\title{Naslov seminarskog rada\\ \small{Seminarski rad u okviru kursa\\Metodologija stručnog i naučnog rada\\ Matematički fakultet}}
+\title{Haskell: Debagovati ili nedebagovati?\\ \small{Seminarski rad u okviru kursa\\Metodologija stručnog i naučnog rada\\ Matematički fakultet}}
 
-\author{Prvi autor, drugi autor, treći autor, četvrti autor\\ kontakt email prvog, drugog, trećeg, četvrtog autora}
+\author{Vladimir Batoćanin, Stefan Stefanović, Jovan Lezaja, Đorđe Jovanović}
 
 %\date{9.~april 2015.}
 
@@ -71,23 +71,25 @@ U ovom tekstu je ukratko prikazana osnovna forma seminarskog rada. Obratite paž
 \section{Uvod}
 \label{sec:uvod}
 
-Kada budete predavali seminarski rad, imenujete datoteke tako da sadrže redni broj teme, temu seminarskog rada, kao i prezimena članova grupe. Precizna uputstva na temu imenovnja će biti data na formi za predaju seminarskog rada. Predaja seminarskih radova biće isključivo preko veb forme, a NE slanjem mejla. Link na formu će biti dat u okviru obaveštenja na strani kursa. Vodite računa da prilikom predavanja seminarskog rada predate samo one fajlove koji su neophodni za ponovno generisanje pdf datoteke. To znači da pomoćne fajlove, kao što su .log, .out, .blg, .toc, .aux i slično, \textbf{ne treba predavati}.
+{Dosta programera će vam reći da je debagovanje u Haskellu kardinalna greška. Ovo stanovište brane činjenicom da je Haskell čist funkcionalni jezik, što znači da je jedina ispravna praksa izolovano testiranje svake funkcije. Takođe se pozivaju na strogu tipiziranost i precizno definisanje potpisa funkcija. 
+\\
+Ovo u idealnim slučajevima važi, s tim što vrlo često potpisi funkcija nisu ispravni, nisu potpuni ili su prosto nepostojeći, što dovodi do odloženih rafalnih grešaka. Tada nam je potreban neki metod da i otkrijemo uzrok te greške da bismo je i otklonili.}
 
-\section{Osnovna uputstva}
-Vaš seminarski rad mora da sadrži najmanje jednu \textbf{sliku}, najmanje jednu \textbf{tabelu} i najmanje \textbf{sedam referenci} u spisku literature. Najmanje jedna slika treba da bude originalna i da predstavlja neke podatke koje ste Vi osmislili da treba da prezentujete u svom radu. Isto važi i za najmanje jednu tabelu. 	Od referenci, neophodno je imati bar jednu \textbf{knjigu}, bar jedan \textbf{naučni članak} iz odgovarajućeg časopisa i bar jednu adekvatnu \textbf{veb adresu}. 
+\section{Matematičko dokazivanje}
 
-\textbf{Dužina seminarskog rada treba da bude od 10 do 12 strana.} Svako prekoračenje ili potkoračenje biće kažnjeno sa odgovarajućim brojem poena. Eventualno, nakon strane 12, može se javiti samo tekst poglavlja \textbf{Dodatak} koji sadrži nekakav dodatni k\^{o}d, ali je svakako potrebno da rad može da se pročita i razume i bez čitanja tog dodatka. 
+Funckionalna paradigma se veoma lako prevodi na matematički jezik, što nam dozvoljava da već u fazi inicijalnog pisanja koda dokažemo da je naš program matematički korektan. U ovom kontekstu se najčešće koristi metod struktruralne indukcije. Ovo je moguće isključivio zbog rekurzivno definisanih struktura podataka u Haskell-u, pri čemu se koristi operator | (ili) koji označava matematičku uniju:
+\begin{lstlisting}[caption={Rekurzivno definisanje liste u Haskellu},frame=single, label=simple]
+data Lista x = PraznaLista | Cons a (Lista x)
+\end{lstlisting}
+Znajući ovo, vrlo lako možemo dokazati korektnost programa koji koriste liste uz pomoć matematičke indukcije, gde bi nam baza indukcije bio slučaj prazne liste, a induktivni korak rekurzivni poziv neke podliste, kao na primer:
+\begin{lstlisting}[caption={Primer rekurzivno definisane funkcije},frame=single, label=simple]
+sum :: [Int] -> Int
+-- baza indukcije
+sum [] = 0
+-- induktivni korak sa induktivnom hipotezom
+sum (x:xs) = x + sum xs 
+\end{lstlisting}
 
-Ко жели, може да пише рад ћирилицом. У том случају, неопходно је да су инсталирани одговарајући пакети: texlive-fonts-extra, texlive-latex-extra, texlive-lang-cyrillic, texlive-lang-other. 
-
-Nemojte koristiti stari način pisanja slova, tj ovo:
-\begin{verbatim}
-\v{s} i \v{c} i \'c ...
-\end{verbatim}
-Koristite direknto naša slova:	
-\begin{verbatim}
-š i č i ć ... 
-\end{verbatim}
 
 
 \section{Engleski termini i citiranje}	
