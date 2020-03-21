@@ -77,21 +77,27 @@ Ovo u idealnim slučajevima važi, s tim što ovo ne uključuje slučaj gde prog
 
 \section{Matematičko dokazivanje}
 
-Funckionalna paradigma se veoma lako prevodi na matematički jezik, što nam dozvoljava da već u fazi inicijalnog pisanja koda dokažemo da je naš program matematički korektan. U ovom kontekstu se najčešće koristi metod {\em struktruralne indukcije}  (eng.~{\em structural induction}). Ovo je moguće isključivio zbog rekurzivno definisanih struktura podataka u Haskell-u, pri čemu se koristi operator | (ili) koji označava matematičku uniju.
+Za funckionalnu paradigmu se veoma lako nalazi analogon na formalno matematičkom jeziku, što nam dozvoljava da već u fazi inicijalnog pisanja koda dokažemo da je naš program matematički korektan. U ovom kontekstu se najčešće koristi metod {\em struktruralne indukcije}  (eng.~{\em structural induction}). Ovo je moguće isključivio zbog rekurzivno definisanih struktura podataka u Haskell-u, pri čemu se koristi operator | (ili) koji označava matematičku uniju.
 \begin{lstlisting}[caption={Rekurzivno definisanje liste u Haskellu},frame=single, label=simple]
 data Lista x = PraznaLista | Cons a (Lista x)
 \end{lstlisting}
-Znajući ovo, vrlo lako možemo dokazati korektnost programa koji koriste liste uz pomoć matematičke indukcije, gde bi nam baza indukcije bio slučaj prazne liste, a induktivni korak rekurzivni poziv neke podliste, kao na primer:
+Znajući ovo, vrlo lako možemo dokazati korektnost programa koji koriste liste uz pomoć matematičke indukcije, gde bi nam baza indukcije bio slučaj prazne liste, a induktivni korak rekurzivni poziv liste koju dobijamo dodajuci neki broj elemenata na listu za koju pretpostavimo da važi funkcija na osnovu induktivne hipoteze, kao na primer:
 \begin{lstlisting}[caption={Primer rekurzivno definisane funkcije},frame=single, label=simple]
 sum :: [Int] -> Int
 -- baza indukcije
 sum [] = 0
--- induktivni korak sa induktivnom hipotezom
+-- induktivna hipoteza koja vazi za xs
+-- induktivni korak dodavanja jednog elementa x na xs
 sum (x:xs) = x + sum xs 
 \end{lstlisting}
 
 
-\section{Matematičko dokazivanje}
+\section{GHCi Debager}
+GHCi je ugradjeni debager koji nam omogućava da u željenim momentima zaustavimo program i proverimo vrednosti pojedinačnih promenljivih preko {\em tačaka zaustavljanja} (eng.~{\em breakpoints}). Takodje vrlo bitna funkcionalnost je korak-po-korak izvršavanje programa sa zaustavljanjem. Izuzetak od ove funkcionalnosti su vec prekompilirane importovane biblioteke u koje nije moguće ući u okviru međukoraka.
+
+
+\subsection{Trace debagovanje}
+
 \section{Engleski termini i citiranje}	
 \label{sec:termini_i_citiranje}
 
