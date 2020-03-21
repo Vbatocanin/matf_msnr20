@@ -71,13 +71,13 @@ U ovom tekstu je ukratko prikazana osnovna forma seminarskog rada. Obratite paž
 \section{Uvod}
 \label{sec:uvod}
 
-{Dosta programera će vam reći da je debagovanje u Haskellu kardinalna greška. Ovo stanovište brane činjenicom da je Haskell čist funkcionalni jezik, što znači da je jedina ispravna praksa izolovano testiranje svake funkcije. Takođe se pozivaju na strogu tipiziranost i precizno definisanje potpisa funkcija. 
-\\
-Ovo u idealnim slučajevima važi, s tim što vrlo često potpisi funkcija nisu ispravni, nisu potpuni ili su prosto nepostojeći, što dovodi do odloženih rafalnih grešaka. Tada nam je potreban neki metod da i otkrijemo uzrok te greške da bismo je i otklonili.}
+{Dizajn programskog jezika Haskell je takav da programerovo vreme provedeno za kodom je manje debagujući, a više trudeći se da inicijalno napiše ispravan i robustan kod. Ovo stanovište se može braniti činjenicom da je Haskell čist funkcionalni jezik, što znači da je dosta pouzdana praksa izolovano testiranje svake funkcije, kao i stroga tipiziranost, koja drastično smanjuje šansu da se programer vrati na prethodno napisani deo koda. 
+\\ \\
+Ovo u idealnim slučajevima važi, s tim što ovo ne uključuje slučaj gde programer napravi semantičku grešku koja prolazi fazu prevodjenja, kao i slučajeve gde potpisi funkcija nisu ispravni, nisu potpuni ili su prosto nepostojeći. Ovo sve dovodi do odloženih rafalnih grešaka ili do pojave teško uočljivih bagova. Tada nam je potreban neki metod da i otkrijemo uzrok te greške da bismo je i otklonili.}
 
 \section{Matematičko dokazivanje}
 
-Funckionalna paradigma se veoma lako prevodi na matematički jezik, što nam dozvoljava da već u fazi inicijalnog pisanja koda dokažemo da je naš program matematički korektan. U ovom kontekstu se najčešće koristi metod struktruralne indukcije. Ovo je moguće isključivio zbog rekurzivno definisanih struktura podataka u Haskell-u, pri čemu se koristi operator | (ili) koji označava matematičku uniju:
+Funckionalna paradigma se veoma lako prevodi na matematički jezik, što nam dozvoljava da već u fazi inicijalnog pisanja koda dokažemo da je naš program matematički korektan. U ovom kontekstu se najčešće koristi metod {\em struktruralne indukcije}  (eng.~{\em structural induction}). Ovo je moguće isključivio zbog rekurzivno definisanih struktura podataka u Haskell-u, pri čemu se koristi operator | (ili) koji označava matematičku uniju.
 \begin{lstlisting}[caption={Rekurzivno definisanje liste u Haskellu},frame=single, label=simple]
 data Lista x = PraznaLista | Cons a (Lista x)
 \end{lstlisting}
@@ -89,10 +89,9 @@ sum [] = 0
 -- induktivni korak sa induktivnom hipotezom
 sum (x:xs) = x + sum xs 
 \end{lstlisting}
-Ovaj princip se zove {\em strukturalna indukcija}
 
 
-
+\section{Matematičko dokazivanje}
 \section{Engleski termini i citiranje}	
 \label{sec:termini_i_citiranje}
 
