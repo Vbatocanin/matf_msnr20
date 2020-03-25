@@ -110,14 +110,21 @@ Het (eng. {\em Hat -- Haskell tracer}) je alat koji se koristi za generisanje tr
 i nadziranje tako generisanog traga \cite{chitil2002transforming}. Ovaj alat nije deo nekog prevodioca ili interpretatora za programski jezik Haskel,
 što se može smatrati prednošću jer samo njegovo postojanje i održavanje nije tesno vezano za postojanje i održavanje nekog specifičnog prevodioca, odnosno interpretatora.
 U ovom radu naglasak će biti na korišćenju alata Het kao debagera, no on može da se koristi i u svrhe posmatranja kako funkcioniše korektno napisan Haskel program.
+Nažalost, usled zastarelosti biblioteka koje koristi alat Het, autori rada nisu uspeli da osposobe alat na svojim mašinama nakon više pokušaja. 
+% ovde bi trebalo dodati rečenicu koja naglašava da debagovanje u Haskelu samim tim nije bas ``najudobnije''
 
 
 \subsection{???}
-Het pruža programeru uvid u detalje izračunavanja pri izvršavanju Haskel programa korišćenjem tragača (eng. {\em tracer}). 
+Alat Het pruža programeru uvid u detalje izračunavanja pri izvršavanju Haskel programa korišćenjem tragača (eng. {\em tracer}). 
 Korišćenjem informacija koje generiše tragač je moguće locirati greške u našem kodu (ukoliko takvih ima). 
 Sleđenje tragova izračunavanja u Hetu se sastoji iz dve faze: prva je ostavljanje traga (eng. {\em trace generation}), a druga je pregledanje traga (eng. {\em trace viewing}) \cite{chitil2002transforming}.
 
 \subsubsection{Ostavljanje traga}
+U fazi ostavljanja traga se pokreće program koji treba da se debaguje tako da ispisuje trag u određenu datoteku. Da bi program ispisivao trag u datoteku,
+potrebno ga je prvo transformisati korišćenjem programa iz Het svite programa pod nazivom {\em hat-trans}. Tako transformisan program se prevodi i pokreće,
+pri čemu transformisan program radi isto što i originalni program, uz dodatak da ispisuje trag u određenu datoteku. Nakon toga se prelazi u fazu pregledanja traga.
+
+\subsubsection{Pregledanje traga}
 
 
 \section{HOOD Debager}
