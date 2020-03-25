@@ -235,6 +235,60 @@ cifre 3542
 (3 : 5 : 4 : 2 : [])
 \end{lstlisting}
 
+\section{Debagovanje korišćenjem Debug biblioteke}
+Debug biblioteka je kreirana or strane Nila Mičela(eng. {\em Neil Mitchell}) zarad laganog debagovanja Haskell programa. Fokus ove biblioteke jeste na jednostavnosti korišćenja i intuitivnom interfejsu. Pošto je u pitanju Haskell biblioteka, njena implementacija i održavanje ne zavisi od eksternih alata, što znatno olakšava stvari. Debug pri korišćenju generiše trag (eng. {\em trace}) i omogućava jasno praćenje generisanog traga kroz svako pozivanje funkcije \cite{chitil2002transforming}.
+Mitchellov Debug se može integrisati u Haskell program na više načina...
+
+\subsection{Metod 1. Direktno ubacivanje u programski kod kao funkcije}
+Debug je Haskell biblioteka i kao jedan od mogućih metoda korišćenja jeste poput najobičnije Haskell funkcije. Ispod se nalazi primer kako to izgleda, korišćenjem našeg primera. 
+\begin{lstlisting}[caption={Okružujemo naš kod funkcijom debug, iz biblioteke Debug, sa uključivanjem ekstenzija navedenih u prvom redu}, language=Haskell]
+{-# LANGUAGE TemplateHaskell, ViewPatterns, PartialTypeSignatures #-}
+{-# OPTIONS_GHC -Wno-partial-type-signatures #-}
+import Debug
+
+debug [d|
+    countGreater1st :: (Ord a) => [a] -> Int
+    countGreater1st [] = 0
+    countGreater1st [x] = 0
+    countGreater1st (x:y:xs) 
+            | y > x = 1 + countGreater1st (x:xs)
+            | otherwise = 0 + countGreater1st (x:xs)
+    
+    countGreater1st' :: (Ord a) => [a] -> Int
+    countGreater1st' [] = 0
+    countGreater1st' [x] = 0
+    countGreater1st' (x:y:xs) 
+            | y > x = 1 + countGreater1st (y:xs)
+            | otherwise = 0 + countGreater1st (x:xs)
+
+    countGreater1st'' :: (Ord a) => [a] -> Int
+    countGreater1st'' [] = 0
+    countGreater1st'' [x] = 0
+    countGreater1st'' (x:y:xs) 
+            | y >= x = 1 + countGreater1st (y:xs)
+            | otherwise = 0 + countGreater1st (x:xs)
+    |]
+\end{lstlisting}
+
+\subsection{Metod 2. debug-pp}
+debug-pp je preprocesor Haskell source koda koji pojednostavljuje primenu debug biblioteke tako što automatski primenjuje Metod 1. Ubacujemo...
+\begin{lstlisting}[language=Haskell]
+{-# OPTIONS -F -pgmF debug-pp #-}
+\end{lstlisting}
+...na vrh Haskell programa.
+
+\subsection{Primena debug-a}
+Nakon što primenimo jedan od ova dva metoda, pozivamo Haskell kao i inače, i potom koristimo debugView poziv za debagovanje.
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.5]{pozivanje-mitchell.png}
+\end{center}
+Nakon što pozovemo bilo koju funkciju, komandom debugView pozivamo browser prozor koji nam prikazuje željene informacije.
+\includegraphics[scale=0.4]{mitchell-browser-pregled.png}
+Za svaku od levo navedenih funkcija možemo jasno videti argumente, rezultat i stek, što nam omogućava pregledno debagovanje bilo kog Haskell programa.
+Primetićemo da gornji primer radi kako treba. Probajmo sad ostala dva primera.
+\end{figure}
+
 \section{Engleski termini i citiranje}	
 \label{sec:termini_i_citiranje}
 
