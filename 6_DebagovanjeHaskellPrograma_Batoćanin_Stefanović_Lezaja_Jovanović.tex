@@ -162,6 +162,167 @@ Naziv alata & Opis\\ \hline
 \footnotetext[1]{Stek je {\em virtuelni} zato što je u stvarnom steku izračunavanja Haskel programa omogućeno {\em lenjo izračunavanje}, dok se kod virtuelnog steka prikazuje kakav bi bio stek u slučaju strogog izračunavanja.} 
 
 
+\section{HOOD Debager}
+Hud (eng. {\em HOOD -- Haskell Object Observation Debugger}) je mali debager za Haskell, baziran na posmatranju struktura podataka dok se prosleđuju između funkcija.
+Debagovanje se postiže umetanjem funkcije {\em observe} između dve funkcije čije međustanje želimo da posmatramo.
+Tip ove funkcije je:
+
+\begin{lstlisting}
+observe :: (Observable a) => String -> a -> a
+\end{lstlisting} 
+
+gde je prvi argument labela kojom obeležavamo ispis, a drugi je objekat koji se posmatra. 
+Što se tiče Haskell-a, {\em observe} se ponaša kao funkcija identiteta s tim što čuva podatke za kasnije čitanje.
+U jednom programu je moguće imati više poziva funkcije observe, koje razlikujemo korišćenjem labela.
+Takođe je moguće posmatrati bilo koji izraz, a ne samo međustanja funkcijskih poziva.
+Glavna prednost huda je to što uz minimalne promene k\^{o}da dobijamo strukturiran prikaz objekata.
+
+\subsection{Primeri korišćenja funkcije observe}
+\begin{primer}
+ Posmatranje konačne liste:
+\end{primer}
+Ovde je eksplicitno naveden tip podatka koji se posmatra, ali to nije neophodno.
+\begin{lstlisting}
+pr1 :: IO ()
+pr1 = print ((observe "lista" :: Observing [Int])[0..9])
+-- lista
+0 : 1 : 2 : 3 : 4 : 5 : 6 : 7 : 8 : 9 : []
+\end{lstlisting}
+
+Podjednako je validan i sledeći izraz: 
+\begin{lstlisting}
+pr1 = print (observe "lista" [0..9])
+\end{lstlisting}
+
+\begin{primer} 
+Posmatranje međustanja
+\end{primer}
+
+\begin{lstlisting}
+pr2 :: IO()
+pr2 = print . reverse . observe "medjustanje" . reverse $ [0..9]
+-- medjustanje
+9 : 8 : 7 : 6 : 5 : 4 : 3 : 2 : 1 : []
+\end{lstlisting}
+
+Ovde vidimo da observe podržava parcijalnu aplikaciju, što je standardni način zapisivanja kada posmatramo
+međustanja.
+
+\begin{primer} 
+Beskonačne liste
+\end{primer}
+\begin{lstlisting}
+pr3 :: IO()
+pr3 = print (take 6 (observe "beskonacna lista" [0..]))
+-- beskonacna lista
+0 : 1 : 2 : 3 : 4 : 5 : _
+\end{lstlisting}
+
+Primećujemo da su brojevi od 0 do 5 izračunati i prikazani, a ostatak koji nije izračunat je prikazan sa
+karakterom \_.
+
+\begin{primer} 
+ Liste sa neizračunatim elementima
+\end{primer}
+\begin{lstlisting}
+pr4 :: IO()
+pr4 = print (length (observe "konacna lista" [1..6]))
+-- konacna lista
+_ : _ : _ : _ : _ : _ : []
+\end{lstlisting}
+
+Pošto je Haskell lenj jezik, elementi nisu izračunati, pa samim tim ni observe ne može da ih vidi.
+
+\begin{primer} 
+Liste sa polovično izračunatim elementima
+\end{primer}
+\begin{lstlisting}
+pr5 :: IO ()
+pr5 = let xs = observe "polovicna lista" [0..9]
+	in print(xs !! 1 + xs !! 5)
+-- polovicna lista
+_ : 1 : _ : _ : _ : 5 : _
+\end{lstlisting}
+
+Primećujemo da observe vidi samo one elemente koji su izračunati.
+
+\begin{primer} 
+Korišćenje više funkcija observe
+\end{primer}
+\begin{lstlisting}
+cifre :: Int -> [Int]
+cifre = observe "posle reverse" 
+		. reverse
+		. observe "posle map"
+		. map (`mod` 10)
+		. observe "posle takeWhile"
+		. takeWhile (/= 0)
+		. observe "posle iterate"
+		. iterate (`div` 10)
+cifre 3542
+-- posle iterate
+(3542 : 354 : 35 : 3 : 0 : _)
+-- posle takeWhile
+(3542 : 354 : 35 : 3 : [])
+-- posle map
+(2 : 4 : 5 : 3 : [])
+-- posle reverse
+(3 : 5 : 4 : 2 : [])
+\end{lstlisting}
+
+\section{Debagovanje korišćenjem Debug biblioteke}
+Debug biblioteka je kreirana or strane Nila Mičela(eng. {\em Neil Mitchell}) zarad laganog debagovanja Haskell programa. Fokus ove biblioteke jeste na jednostavnosti korišćenja i intuitivnom interfejsu. Pošto je u pitanju Haskell biblioteka, njena implementacija i održavanje ne zavisi od eksternih alata, što znatno olakšava stvari. Debug pri korišćenju generiše trag (eng. {\em trace}) i omogućava jasno praćenje generisanog traga kroz svako pozivanje funkcije \cite{chitil2002transforming}.
+Mitchellov Debug se može integrisati u Haskell program na više načina...
+
+\subsection{Metod 1. Direktno ubacivanje u programski kod kao funkcije}
+Debug je Haskell biblioteka i kao jedan od mogućih metoda korišćenja jeste poput najobičnije Haskell funkcije. Ispod se nalazi primer kako to izgleda, korišćenjem našeg primera. 
+\begin{lstlisting}[caption={Okružujemo naš kod funkcijom debug, iz biblioteke Debug, sa uključivanjem ekstenzija navedenih u prvom redu}, language=Haskell]
+{-# LANGUAGE TemplateHaskell, ViewPatterns, PartialTypeSignatures #-}
+{-# OPTIONS_GHC -Wno-partial-type-signatures #-}
+import Debug
+
+debug [d|
+    countGreater1st :: (Ord a) => [a] -> Int
+    countGreater1st [] = 0
+    countGreater1st [x] = 0
+    countGreater1st (x:y:xs) 
+            | y > x = 1 + countGreater1st (x:xs)
+            | otherwise = 0 + countGreater1st (x:xs)
+    
+    countGreater1st' :: (Ord a) => [a] -> Int
+    countGreater1st' [] = 0
+    countGreater1st' [x] = 0
+    countGreater1st' (x:y:xs) 
+            | y > x = 1 + countGreater1st (y:xs)
+            | otherwise = 0 + countGreater1st (x:xs)
+
+    countGreater1st'' :: (Ord a) => [a] -> Int
+    countGreater1st'' [] = 0
+    countGreater1st'' [x] = 0
+    countGreater1st'' (x:y:xs) 
+            | y >= x = 1 + countGreater1st (y:xs)
+            | otherwise = 0 + countGreater1st (x:xs)
+    |]
+\end{lstlisting}
+
+\subsection{Metod 2. debug-pp}
+debug-pp je preprocesor Haskell source koda koji pojednostavljuje primenu debug biblioteke tako što automatski primenjuje Metod 1. Ubacujemo...
+\begin{lstlisting}[language=Haskell]
+{-# OPTIONS -F -pgmF debug-pp #-}
+\end{lstlisting}
+...na vrh Haskell programa.
+
+\subsection{Primena debug-a}
+Nakon što primenimo jedan od ova dva metoda, pozivamo Haskell kao i inače, i potom koristimo debugView poziv za debagovanje.
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.5]{pozivanje-mitchell.png}
+\end{center}
+Nakon što pozovemo bilo koju funkciju, komandom debugView pozivamo browser prozor koji nam prikazuje željene informacije.
+\includegraphics[scale=0.4]{mitchell-browser-pregled.png}
+Za svaku od levo navedenih funkcija možemo jasno videti argumente, rezultat i stek, što nam omogućava pregledno debagovanje bilo kog Haskell programa.
+Primetićemo da gornji primer radi kako treba. Probajmo sad ostala dva primera.
+\end{figure}
 
 \section{Engleski termini i citiranje}	
 \label{sec:termini_i_citiranje}
