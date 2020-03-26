@@ -106,26 +106,60 @@ Posledice ovog problema se mogu amortizovati uvođenjem parcijalnog izračuvanja
 
 
 \section{Debagovanje korišćenjem Heta}
-Het (eng. {\em Hat -- Haskell tracer}) je alat koji se koristi za generisanje traga (eng. {\em trace}) prilikom izvršavanja Haskel programa
-i nadziranje tako generisanog traga \cite{chitil2002transforming}. Ovaj alat nije deo nekog prevodioca ili interpretatora za programski jezik Haskel,
-što se može smatrati prednošću jer samo njegovo postojanje i održavanje nije tesno vezano za postojanje i održavanje nekog specifičnog prevodioca, odnosno interpretatora.
+Het (eng. {\em Hat -- Haskell tracer}) je alat koji se koristi za generisanje {\em traga} (eng. {\em trace}) prilikom izvršavanja Haskel programa
+i nadziranje tako generisanog {\em traga} \cite{chitil2002transforming}. Smatra se jednim od najnaprednijih alata za debagovanje u Haskelu. Prednost alata Het u odnosu na ostale alate za debagovanje 
+se ogleda upravo u upotrebi {\em traga}, jer se programeru pruža pogled unutar ``crne kutije'', tj. sva izračunavanja u našem Haskel programu bivaju razmotana u niz redukcija koja programer može da analizira.
+Ovaj alat nije deo nekog prevodioca ili interpretatora za programski jezik Haskel,
+što se može smatrati prednošću jer samo njegovo postojanje i održavanje nije tesno vezano za postojanje i održavanje nekog specifičnog prevodioca, odnosno interpretatora. 
 U ovom radu naglasak će biti na korišćenju alata Het kao debagera, no on može da se koristi i u svrhe posmatranja kako funkcioniše korektno napisan Haskel program.
 Nažalost, usled zastarelosti biblioteka koje koristi alat Het, autori rada nisu uspeli da osposobe alat na svojim mašinama nakon više pokušaja. 
-% ovde bi trebalo dodati rečenicu koja naglašava da debagovanje u Haskelu samim tim nije bas ``najudobnije''
+%TODO: ovde bi trebalo dodati rečenicu koja naglašava da debagovanje u Haskelu samim tim nije bas ``najudobnije'', makar sto se tice Heta 
+
+Alat Het pruža programeru uvid u detalje izračunavanja pri izvršavanju Haskel programa korišćenjem {\em tragača} (eng. {\em tracer}). 
+Korišćenjem informacija koje generiše {\em tragač} je moguće locirati greške u našem kodu (ukoliko takvih ima).
+Sleđenje {\em tragova} izračunavanja u Hetu se sastoji iz dve faze: prva je {\em ostavljanje traga} (eng. {\em trace generation}), a druga je {\em pregledanje traga} (eng. {\em trace viewing}) \cite{chitil2002transforming}.
+
+\subsection{Ostavljanje traga}
+U fazi {\em ostavljanja traga} se pokreće program koji treba da se debaguje tako da ispisuje {\em trag} u određenu datoteku. Da bi program ispisivao {\em trag} u datoteku,
+potrebno ga je prvo transformisati korišćenjem alata koji se sadrži u Hetu pod nazivom {\em hat-trans}. U tom procesu se svaki modul iz našeg Haskel programa transformišu 
+u njemu odgovarajući Het modul. Tako transformisan program se prevodi i pokreće,
+pri čemu transformisan program radi isto što i originalni program, uz dodatak da ispisuje {\em trag} u određenu datoteku. Nakon toga se prelazi u fazu {\em pregledanja traga}.
+
+\subsection{Pregledanje traga}
+Kada je naš program završio, moguće je pregledati {\em trag} korišćenjem alata koje nudi Het. Važno je napomenuti da se pod ``završavanje programa'' ne smatra 
+da je program isključivo završio {\em ispravno}, već da je program eventualno završio sa nekom porukom o grešci ili pak da je prekinut od strane programera \cite{hat_haskell_org}.
+Za analizu {\em traga} Het nudi nekolicinu interaktivnih alata koji pregledaju ponašanje programa, 
+između ostalog su to: {\em hat-observe}, {\em hat-trail}, {\em hat-detect}, {\em hat-explore} i {\em hat-stack}. Opis navedenih alata se nalazi u tabeli \ref{tab:tabela_hat}
 
 
-\subsection{???}
-Alat Het pruža programeru uvid u detalje izračunavanja pri izvršavanju Haskel programa korišćenjem tragača (eng. {\em tracer}). 
-Korišćenjem informacija koje generiše tragač je moguće locirati greške u našem kodu (ukoliko takvih ima). 
-Sleđenje tragova izračunavanja u Hetu se sastoji iz dve faze: prva je ostavljanje traga (eng. {\em trace generation}), a druga je pregledanje traga (eng. {\em trace viewing}) \cite{chitil2002transforming}.
 
-\subsubsection{Ostavljanje traga}
-U fazi ostavljanja traga se pokreće program koji treba da se debaguje tako da ispisuje trag u određenu datoteku. Da bi program ispisivao trag u datoteku,
-potrebno ga je prvo transformisati korišćenjem programa iz Het svite programa pod nazivom {\em hat-trans}. Tako transformisan program se prevodi i pokreće,
-pri čemu transformisan program radi isto što i originalni program, uz dodatak da ispisuje trag u određenu datoteku. Nakon toga se prelazi u fazu pregledanja traga.
+\begin{table}[h!]
+\begin{center}
+\caption{Opis nekih od alata koje nudi Het}
+\begin{tabular}{|c|c|} \hline
+Naziv alata & Opis\\ \hline
+{\em hat-observe} & { Prikazuje kako se koriste funkcije najvišeg nivoa, } \\ & 
+		    { tj. za svako ime funkcije prikazuje sve argumente } \\ & 
+		    { sa kojima je data funkcija pozivana prilikom izračunavanja }\\ & 
+		    { programa zajedno sa rezultatima tih poziva. \cite{hat_haskell_org}}\\ \hline
+{\em hat-trail} & { Omogućava praćenje izračunavanja {\em unatraške}, } \\ & 
+		  { počevši od poruke o grešci ili od izlaza programa. \cite{hat_haskell_org}}\\ \hline
+{\em hat-detect} & { Postavljanjem da/ne pitanja za svaku primenu vrednosti  } \\ &
+		   { na neku funkciju, ovaj alat poluautomatski locira } \\ &
+		   { grešku u programu \cite{hat_haskell_org}. Debagovanje } \\ &
+		   { na ovaj način predstavlja srž {\em algoritamskog debagovanja}. }\\ \hline
+{\em hat-stack} & { Ovaj alat za neuspešna izvršavanja programa nagoveštava } \\ & 
+		  { u kojoj funkciji je došlo do prekida izvršavanjam, } \\ & 
+		  { i to tako što ispiše {\em virtuelni stek}\footnotemark[1] funkcijskih poziva \cite{hat_haskell_org}. }\\ \hline % TODO: treba objasniti zašto je virtuelni stek
+{\em hat-explore} & { Slično kao i kod uobičajenih debagera, ovaj alat }\\ &
+		    { označava trenutnu poziciju u izvornom kodu u kojoj } \\ &
+		    { se nalazi prilikom izračunavanja programa \cite{hat_haskell_org}.}\\ \hline
+\end{tabular}
+\label{tab:tabela_hat}
+\end{center}
+\end{table}
 
-\subsubsection{Pregledanje traga}
-
+\footnotetext[1]{Stek je {\em virtuelni} zato što je u stvarnom steku izračunavanja Haskel programa omogućeno {\em lenjo izračunavanje}, dok se kod virtuelnog steka prikazuje kakav bi bio stek u slučaju strogog izračunavanja.} 
 
 
 
