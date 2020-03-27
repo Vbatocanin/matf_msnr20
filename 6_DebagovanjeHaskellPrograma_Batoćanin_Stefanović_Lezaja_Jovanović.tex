@@ -111,10 +111,11 @@ Het (eng. {\em Hat -- {\bf \em Ha}skell {\bf \em t}racer}) je alat koji se koris
 i nadziranje tako generisanog {\em traga} \cite{chitil2002transforming}. Smatra se jednim od najnaprednijih alata za debagovanje u Haskelu. Prednost alata Het u odnosu na ostale alate za debagovanje 
 se ogleda upravo u upotrebi {\em traga}, jer se programeru pruža pogled unutar ``crne kutije'', tj. sva izračunavanja u našem Haskel programu bivaju razmotana u niz redukcija koja programer može da analizira korišćenjem različitih interaktivnih alata, pri čemu svaki od njih na različite načine interpretira generisane tragove i omogućava široki spektar analiza izračunavanja Haskel programa.
 Ovaj alat nije deo nekog prevodioca ili interpretatora za programski jezik Haskel,
-što se može smatrati prednošću jer samo njegovo postojanje i održavanje nije tesno vezano za postojanje i održavanje nekog specifičnog prevodioca, odnosno interpretatora. 
+što se može smatrati prednošću jer samo njegovo postojanje i održavanje nije tesno vezano za postojanje i održavanje nekog specifičnog prevodioca, odnosno interpretatora \cite{chitil2002transforming}. 
 U ovom radu naglasak će biti na korišćenju alata Het kao debagera, no on može da se koristi i u svrhe posmatranja kako funkcioniše korektno napisan Haskel program.
 Nažalost, usled zastarelosti biblioteka koje koristi alat Het, autori rada nisu uspeli da osposobe alat na svojim mašinama nakon više pokušaja. 
 %TODO: ovde bi trebalo dodati rečenicu koja naglašava da debagovanje u Haskelu samim tim nije bas ``najudobnije'', makar sto se tice Heta 
+%TODO: najveća mana Heta to što nije podržan u novijim verzijama. manjak dokumentacije ga čini nepristupačnim itd.
 
 Alat Het pruža programeru uvid u detalje izračunavanja pri izvršavanju Haskel programa korišćenjem {\em tragača} (eng. {\em tracer}). 
 Korišćenjem informacija koje generiše {\em tragač} je moguće locirati greške u našem kodu (ukoliko takvih ima).
@@ -122,15 +123,24 @@ Sleđenje {\em tragova} izračunavanja u Hetu se sastoji iz dve faze: prva je {\
 
 \subsection{Ostavljanje traga}
 U fazi {\em ostavljanja traga} se pokreće program koji treba da se debaguje tako da ispisuje {\em trag} u određenu datoteku. Da bi program ispisivao {\em trag} u datoteku,
-potrebno ga je prvo transformisati korišćenjem alata koji se sadrži u Hetu pod nazivom {\em hat-trans}. U tom procesu se svaki modul iz našeg Haskel programa transformiše 
-u njemu odgovarajući Het modul. Tako transformisan program se prevodi i pokreće,
-pri čemu transformisan program radi isto što i originalni program, uz dodatak da ispisuje {\em trag} u određenu datoteku. Nakon toga se prelazi u fazu {\em pregledanja traga}.
+potrebno ga je prvo transformisati korišćenjem alata koji se sadrži u Hetu pod nazivom {\em hat-trans}. U tom procesu se naš Haskel program transformiše u
+Haskel program koji se prevodi i linkuje sa odgovarajućim bibliotekama koje pruža Het \cite{chitil2002transforming}. Tako transformisan program se prevodi i pokreće,
+pri čemu transformisan program radi isto što i originalni program, uz dodatak da ispisuje {\em trag} u određenu datoteku. % Primećujemo nekoliko razlika u odnosu na ostale debagere.
+Jedna od razlika koja se javlja kod Heta u odnosu na neke druge debagere je ta da je uloga transformisanja izvornog koda prepuštena računaru, tj. da je programer oslobođen od dodavanja novog koda u cilju debagovanja, kao što to imamo kod Hud (eng. {\em Hood}) debagera ubacivanjem {\em observe} ključne reči.
+Ta osobina alata Het se može smatrati vrlinom, uzimajući u obzir da je cilj debagovanja da bude što ``bezbolniji'' po originalni izvorni kod, kao i po programera, jer menjanje koda ručno donosi još jedan mogući faktor greške. 
+Takođe, prilikom pokretanja tako transformisanog programa, datoteku sa tragom je moguće koristiti neograničen broj puta, s obzirom da je ta datoteka sačuvana u sekundarnoj memoriji ne bi li moglo da se koristi više alata iz Heta u jednom pokretanju programa.
+Po pitanju zauzetosti memorije ova osobina nije baš poželjna jer, u slučaju debagovanja kompleksnijih programa, datoteka koja sadrži trag izvršavanja programa može da bude velika u smislu memorije.
+Nakon ove faze se prelazi u fazu {\em pregledanja traga}.
 
 \subsection{Pregledanje traga}
 Kada je naš program završio, moguće je pregledati {\em trag} korišćenjem alata koje nudi Het. Važno je napomenuti da se pod ``završavanje programa'' ne smatra 
 da je program isključivo završio {\em ispravno}, već da je program eventualno završio sa nekom porukom o grešci ili pak da je prekinut od strane programera \cite{hat_haskell_org}.
 Za analizu {\em traga} Het nudi nekolicinu interaktivnih alata koji pregledaju ponašanje programa, 
-između ostalog su to: {\em hat-observe}, {\em hat-trail}, {\em hat-detect}, {\em hat-explore} i {\em hat-stack}. Opis navedenih alata se nalazi u tabeli \ref{tab:tabela_hat}
+između ostalog su to: {\em hat-observe}, {\em hat-trail}, {\em hat-detect}, {\em hat-explore} i {\em hat-stack}. Opis navedenih alata se nalazi u tabeli \ref{tab:tabela_hat}.
+Veliki broj alata koji nude različite poglede na program koji se debaguje je jedna od glavnih osobina alata Het, a uzimajući u obzir da su određeni alati inspirisani nekim već postojećim debagerima (Hued (eng. {\em Hoed}) kao inspiracija za {\em hat-detect} i Hud (eng. {\em HOOD}) kao inspricija za {\em hat-observe}), potreba za drugim alatima pri debagovanju je smanjena.
+
+Nažalost, nekompatibilnost alata Het sa novijim verzijama Haskel biblioteka i {\em GHC}-om ({\em GHC} - {\em Glasgow Haskell Compiler}) ga čini nepristupačnim programerima 
+koji žele da posvete što manje vremena na iscrpna podešavanja verzija raznoraznih biblioteka, a što više na debagovanje.
 
 
 
