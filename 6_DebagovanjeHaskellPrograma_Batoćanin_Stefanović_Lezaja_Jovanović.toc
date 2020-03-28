@@ -1,0 +1,28 @@
+\babel@toc {serbian}{}
+\contentsline {section}{\numberline {1}Uvod}{2}{section.1}
+\contentsline {section}{\numberline {2}Matemati\IeC {\v c}ko dokazivanje}{2}{section.2}
+\contentsline {section}{\numberline {3}GHCi Debager}{2}{section.3}
+\contentsline {subsection}{\numberline {3.1}Ta\IeC {\v c}ke zaustavljanja i inspekcija varijabli}{3}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Trace}{3}{subsection.3.2}
+\contentsline {section}{\numberline {4}Debagovanje kori\IeC {\v s}\IeC {\'c}enjem Heta}{3}{section.4}
+\contentsline {subsection}{\numberline {4.1}Ostavljanje traga}{4}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Pregledanje traga}{4}{subsection.4.2}
+\contentsline {section}{\numberline {5}HOOD Debager}{5}{section.5}
+\contentsline {subsection}{\numberline {5.1}Primeri kori\IeC {\v s}\IeC {\'c}enja funkcije observe}{6}{subsection.5.1}
+\contentsline {section}{\numberline {6}Debagovanje kori\IeC {\v s}\IeC {\'c}enjem Debug biblioteke}{8}{section.6}
+\contentsline {subsection}{\numberline {6.1}Primena debug-a}{9}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}Problemi debug-a}{11}{subsection.6.2}
+\contentsline {subsection}{\numberline {6.3}Debug.Hoed}{11}{subsection.6.3}
+\contentsline {section}{\numberline {7}Engleski termini i citiranje}{12}{section.7}
+\contentsline {section}{\numberline {8}Slike i tabele}{12}{section.8}
+\contentsline {section}{\numberline {9}K\^{o}d i paket listings}{13}{section.9}
+\contentsline {section}{\numberline {10}Prvi naslov}{13}{section.10}
+\contentsline {subsection}{\numberline {10.1}Prvi podnaslov}{13}{subsection.10.1}
+\contentsline {subsection}{\numberline {10.2}Drugi podnaslov}{14}{subsection.10.2}
+\contentsline {subsection}{\numberline {10.3}... podnaslov}{14}{subsection.10.3}
+\contentsline {section}{\numberline {11}n-ti naslov}{14}{section.11}
+\contentsline {subsection}{\numberline {11.1}... podnaslov}{14}{subsection.11.1}
+\contentsline {subsection}{\numberline {11.2}... podnaslov}{14}{subsection.11.2}
+\contentsline {section}{\numberline {12}Zaklju\IeC {\v c}ak}{14}{section.12}
+\contentsline {section}{Literatura}{14}{section.12}
+\contentsline {section}{\numberline {A}Dodatak}{14}{appendix.A}
