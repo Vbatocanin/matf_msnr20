@@ -105,7 +105,7 @@ Posledice ovog problema se mogu amortizovati uvođenjem parcijalnog izračuvanja
 
 \subsection{Trace}
 
-U tradicionalnim nefunckionalnim jezicima se podrazumeva postojanje debagera, koji prati tačnu sekvencu poziva koji su se izvršavali od pokretanja programa. Ovo je izutetno teško implementirati u programskim jezicima kao što je Haskell zbog toga što se izrazi i funkcije ne izračunavaju tačnim redosledom kojim su pozvani već se izračunavaju tek kada su potrebni za neko drugo izračunavanje (eng. {\em demand-driven execution}).
+U tradicionalnim nefunckionalnim jezicima se podrazumeva postojanje debagera, koji prati tačnu sekvencu poziva koji su se izvršavali od pokretanja programa. Ovo je izutetno teško implementirati u programskim jezicima kao što je Haskell zbog toga što se izrazi i funkcije ne izračunavaju tačnim redosledom kojim su pozvani već se izračunavaju tek kada su potrebni za neko drugo izračunavanje (eng. {\em demand-driven execution}). Idealno rešenje bi bilo da se programera apstrahuje evaluacija koja bi izgledala što više kao ona u imperativnom jeziku, dok bi interno bio čuvan pravi redosled poziva i evaluacija, ovo rade neki Haskell debageri, ali GHCi nema tu funkcionalnost, odnosno ne pravi leksicki stek poziva (eng. {\em lexical call stack}) , on nam isključivo daje da na tackama zaustavljanja imamo pregled prethodnih koraka evaluiranja.
 %TODO: dodati sajt u source za demand-driven execution: https://downloads.haskell.org/~ghc/7.6.3/docs/html/users_guide/ghci-debugger.html
 
 
