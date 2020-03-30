@@ -178,7 +178,7 @@ Naziv alata & Opis\\ \hline
 \footnotetext[1]{Stek je {\em virtuelni} zato što je u stvarnom steku izračunavanja Haskel programa omogućeno {\em lenjo izračunavanje}, dok se kod virtuelnog steka prikazuje kakav bi bio stek u slučaju strogog izračunavanja.} 
 
 \section{HOOD Debager}
-Hud (eng. {\em HOOD -- Haskell Object Observation Debugger}) je mali debager za Haskel, baziran na posmatranju struktura podataka dok se prosleđuju između funkcija.
+Hud (eng. {\em HOOD -- Haskell Object Observation Debugger}) je mali debager za Haskel, baziran na posmatranju struktura podataka dok se prosleđuju između funkcija.\cite{hood}
 Implementiran je kao nezavisna biblioteka koju je moguće koristiti iz bilo kog Haskel kompajlera, što ga izdvaja u odnosu na ostale debagere.
 Korišćenje huda je relativno prosto. Prvo se vrši umetanje funkcije {\em observe} ispred objekta koji se posmatra ili između dve funkcije čije međustanje želimo da posmatramo.
 Nakon toga program se izvršava, a zatim se vrši ispis stanja objekata koji su posmatrani.
@@ -194,7 +194,7 @@ Za svaki novi tip koji se napravi nepohodno je da  pridruži ovoj klasi, ako že
 Što se tiče Haskel-a, {\em observe} se ponaša kao funkcija identiteta s tim što čuva podatke za kasnije čitanje.
 U jednom programu je moguće imati više poziva funkcije observe, koje razlikujemo korišćenjem labela.
 Takođe je moguće posmatrati bilo koji izraz, a ne samo međustanja funkcijskih poziva.
-Pozivi funkcije {\em observe} ne zahtevaju dodatna izračunavanja posmatranog objekta što ide u prilog efikasnosti ovog alata.
+Pozivi funkcije {\em observe} ne zahtevaju dodatna izračunavanja posmatranog objekta što ide u prilog efikasnosti ovog alata.\cite{declarative}
 Glavna prednost huda je to što uz minimalne promene k\^{o}da dobijamo strukturiran prikaz objekata.
 
 \subsection{Primeri korišćenja funkcije observe}
@@ -226,7 +226,7 @@ pr2 = print . reverse . observe "medjustanje" . reverse $ [0..9]
 \end{lstlisting}
 
 Ovde vidimo da observe podržava parcijalnu aplikaciju, što je standardni način zapisivanja kada posmatramo
-međustanja.
+međustanja.\cite{hood}
 
 \begin{primer} 
 Beskonačne liste
@@ -296,7 +296,7 @@ cifre 3542
 \begin{primer}
 Posmatranje funkcija
 \end{primer}
-Pored posmatranja osnovnih tipova podataka, moguće je i posmatranje funkcija tj. posmatranje mapiranja argumenata u rezultate.
+Pored posmatranja osnovnih tipova podataka, moguće je i posmatranje funkcija tj. posmatranje mapiranja argumenata u rezultate.\cite{hood}
 Argumenti i rezultati mogu sadržati neizračunate elemente, kao u prethodnim primerima.
 \begin{lstlisting}[language=Haskell]
 pr6 = print ((observe "length" :: Observing([Int] -> Int)) 
