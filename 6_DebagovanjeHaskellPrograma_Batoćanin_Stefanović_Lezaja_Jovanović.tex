@@ -61,7 +61,7 @@
 \maketitle
 
 \abstract{
-Ovaj seminarski rad obrađuje temu debagovanja u Haskell-u, odnosno da li se u dotičnom jeziku moguće tradicionalno debagotati i ako ne, zašto?  Kakva je podrška za debagovanje u ugrađenom debageru i koliko su pouzdani drugi debageri, i da li ima smisla uopste debagovati Haskell kod sa necim osim GHCi-a. Osim GHCi debagera, obrađeni su Hud debager, Hat alat i Debug biblioteka. Za svaki debager su obrađeni najkorišćenije funkcije i prednosti i mane istih. Za Hud debager je obrađen i objašnjen strukturno orijentisan metod debagovanja, podržanost u različitim kompajlerima i rasprostranjenost.Dok je za Het alat i Debug biblioteku je obrađeno generisanje i analiza traga, kao i pregled interaktivih alata koji na različite načine analiziraju program i pomažu programeru pri debagovanju.
+Ovaj seminarski rad obrađuje temu debagovanja u Haskell-u, odnosno da li je u dotičnom jeziku moguće tradicionalno debagotati i ako ne, zašto?  Kakva je podrška za debagovanje u ugrađenom debageru i koliko su pouzdani drugi debageri, i da li ima smisla uopste debagovati Haskell kod sa necim osim GHCi-a. Osim GHCi debagera, obrađeni su Hud debager, Hat alat i Debug biblioteka. Za svaki debager su obrađeni najkorišćenije funkcije i prednosti i mane istih. Za Hud debager je obrađen i objašnjen strukturno orijentisan metod debagovanja, podržanost u različitim kompajlerima i rasprostranjenost.Dok je za Het alat i Debug biblioteku je obrađeno generisanje i analiza traga, kao i pregled interaktivih alata koji na različite načine analiziraju program i pomažu programeru pri debagovanju.
 
 \setcounter{tocdepth}{1} % show only sections in table of contents
 \tableofcontents
@@ -467,7 +467,7 @@ Nažalost, nismo u mogućnosti da prikažemo praktičan primer sa Debug.Hoed usl
 \section{Zaključak}
 \label{sec:zakljucak}
 Ovaj rad se pozabavio pitanjem debagovanja u Haskel programskom jeziku. Posle analize i isprobavanja svih debagera, stekli smo bolje razumevanje u to kako debagovanje u Haskelu funkcioniše.
-No glavno pitanje koje je potrebno naglasiti kada je u pitanju debagovanje u Haskelu je -- da li je debagovanje u Haskelu prijemčivo? Autori rada smatraju da je sam Haskelov dizajn kao programskog jezika zajedno sa svojim ugrađenim debagerima sasvim dovoljan kada je u pitanju debagovanje, što za posledicu ima da debageri izvan već ugrađenog ne zažive, uprkos tome što možda pružaju bolje alate za debagovanje.
+No glavno pitanje koje je potrebno naglasiti kada je u pitanju debagovanje u Haskelu je -- da li je debagovanje u Haskelu prijemčivo? Autori rada smatraju da je sam Haskelov dizajn kao programskog jezika zajedno sa svojim ugrađenim debagerima sasvim dovoljan kada je u pitanju debagovanje, što se može potvrditi čestom pojavom da debageri izvan već ugrađenog nisu ažurni sa trenutnom verzijom jezika, ili prosto uopšte ne funkcionišu više. Među ostalom kao primer se može navesti većina izloženih tehnologija u ovom radu, koje su u velikom broju slučajeva ili nefunkcionalne ili zapostavljene.
 
 
 \addcontentsline{toc}{section}{Literatura}
