@@ -52,7 +52,7 @@
 
 \begin{document}
 
-\title{Haskell: Debagovati ili nedebagovati?\\ \small{Seminarski rad u okviru kursa\\Metodologija stručnog i naučnog rada\\ Matematički fakultet}}
+\title{Debagovati u Haskelu ili ne, pitanje je sad\\ \small{Seminarski rad u okviru kursa\\Metodologija stručnog i naučnog rada\\ Matematički fakultet}}
 
 \author{Vladimir Batoćanin, Stefan Stefanović, Jovan Lezaja, Đorđe Jovanović}
 
@@ -61,7 +61,7 @@
 \maketitle
 
 \abstract{
-Ovaj seminarski rad obrađuje temu debagovanja u Haskell-u, odnosno da li je u dotičnom jeziku moguće tradicionalno debagotati i ako ne, zašto?  Kakva je podrška za debagovanje u ugrađenom debageru i koliko su pouzdani drugi debageri, i da li ima smisla uopste debagovati Haskell kod sa necim osim GHCi-a. Osim GHCi debagera, obrađeni su Hud debager, Hat alat i Debug biblioteka. Za svaki debager su obrađeni najkorišćenije funkcije i prednosti i mane istih. Za Hud debager je obrađen i objašnjen strukturno orijentisan metod debagovanja, podržanost u različitim kompajlerima i rasprostranjenost.Dok je za Het alat i Debug biblioteku je obrađeno generisanje i analiza traga, kao i pregled interaktivih alata koji na različite načine analiziraju program i pomažu programeru pri debagovanju.
+Ovaj seminarski rad obrađuje temu debagovanja u Haskel-u, odnosno da li je u dotičnom jeziku moguće tradicionalno debagotati i ako ne, zašto?  Kakva je podrška za debagovanje u ugrađenom debageru i koliko su pouzdani drugi debageri, i da li ima smisla uopste debagovati Haskel kod sa necim osim GHCi-a. Osim GHCi debagera, obrađeni su Hud debager, Hat alat i Debug biblioteka. Za svaki debager su obrađeni najkorišćenije funkcije i prednosti i mane istih. Za Hud debager je obrađen i objašnjen strukturno orijentisan metod debagovanja, podržanost u različitim kompajlerima i rasprostranjenost.Dok je za Het alat i Debug biblioteku je obrađeno generisanje i analiza traga, kao i pregled interaktivih alata koji na različite načine analiziraju program i pomažu programeru pri debagovanju.
 
 \setcounter{tocdepth}{1} % show only sections in table of contents
 \tableofcontents
@@ -75,14 +75,14 @@ Ovaj seminarski rad obrađuje temu debagovanja u Haskell-u, odnosno da li je u d
 {
 Debagovanje je proces detektovanja i otklanjanja postojećih ili potencijalnih grešaka u našem kodu. Postoji više metoda analiziranja naseg koda od kojih su najpoznatiji analiziranje unapred i unazad. (eng. {\em forward and backwards analysis})\cite{geeks_for_geeks}. Gde prva metoda podrazumeva da pokušamo da od pokretanja programa prouzrokujemo željenu grešku idenjem po jedan korak napred, dok se drugi metod primenjuje kada se već dogodila greška, tada pokušamo da joj zaključimo izvor tako što idemo po jedan korak unazad. Ova definicija tradicionalno podrazumeva korišćenje imperativnih programskih jezika, zbog toga je priča o debagovanju funkcionalnog koda malo komplikovanija. 
 \\ \\
-Dizajn programskog jezika Haskell je takav da programerovo vreme provedeno za kodom je manje debagujući, a više trudeći se da inicijalno napiše ispravan i robustan kod. Ovo stanovište se može braniti činjenicom da je Haskell čist funkcionalni jezik, što znači da je dosta pouzdana praksa izolovano testiranje svake funkcije, kao i stroga tipiziranost, koja drastično smanjuje šansu da se programer vrati na prethodno napisani deo koda. 
+Dizajn programskog jezika Haskel je takav da programerovo vreme provedeno za kodom je manje debagujući, a više trudeći se da inicijalno napiše ispravan i robustan kod. Ovo stanovište se može braniti činjenicom da je Haskel čist funkcionalni jezik, što znači da je dosta pouzdana praksa izolovano testiranje svake funkcije, kao i stroga tipiziranost, koja drastično smanjuje šansu da se programer vrati na prethodno napisani deo koda. 
 \\ \\
 Ovo u idealnim slučajevima važi, s tim što ovo ne uključuje slučaj gde programer napravi semantičku grešku koja prolazi fazu prevodjenja, kao i slučajeve gde potpisi funkcija nisu ispravni, nisu potpuni ili su prosto nepostojeći. Ovo sve dovodi do odloženih rafalnih grešaka ili do pojave teško uočljivih bagova. Tada nam je potreban neki metod da i otkrijemo uzrok te greške da bismo je i otklonili.}
 
 \section{Matematičko dokazivanje}
 
-Za funkcionalnu paradigmu se veoma lako nalazi analogon na formalno matematičkom jeziku, što nam dozvoljava da već u fazi inicijalnog pisanja koda dokažemo da je naš program matematički korektan. U ovom kontekstu se najčešće koristi metod {\em struktruralne indukcije}  (eng.~{\em structural induction}). Ovo je moguće isključivio zbog rekurzivno definisanih struktura podataka u Haskell-u\cite{craftOfFuncProg}, pri čemu se koristi operator | (ili) koji označava matematičku uniju.
-\begin{lstlisting}[caption={Rekurzivno definisanje liste u Haskellu},frame=single, label=simple]
+Za funkcionalnu paradigmu se veoma lako nalazi analogon na formalno matematičkom jeziku, što nam dozvoljava da već u fazi inicijalnog pisanja koda dokažemo da je naš program matematički korektan. U ovom kontekstu se najčešće koristi metod {\em struktruralne indukcije}  (eng.~{\em structural induction}). Ovo je moguće isključivio zbog rekurzivno definisanih struktura podataka u Haskel-u\cite{craftOfFuncProg}, pri čemu se koristi operator | (ili) koji označava matematičku uniju.
+\begin{lstlisting}[caption={Rekurzivno definisanje liste u Haskel-u},frame=single, label=simple]
 data Lista x = PraznaLista | Cons a (Lista x)
 \end{lstlisting}
 Znajući ovo, vrlo lako možemo dokazati korektnost programa koji koriste liste uz pomoć matematičke indukcije, gde bi nam baza indukcije bio slučaj prazne liste, a induktivni korak rekurzivni poziv liste koju dobijamo dodajuci neki broj elemenata na listu za koju pretpostavimo da važi funkcija na osnovu induktivne hipoteze, kao na primer:
@@ -101,14 +101,14 @@ GHCi debager nam omogućava da u željenim momentima zaustavimo program i prover
 
 
 \subsection{Tačke zaustavljanja i inspekcija varijabli}
-Iako je moguće zaustaviti program na bilo kom izrazu odnosno liniji radi inspekcije varijabli, nije moguće proveriti tip i vrednost varijabli koje već nisu izračunate. Ovo je posledica činjenice da se u Haskellu ne vrši zaključivanje tipova tokom izvršavanja programa. Naravno, uvek je moguće forsirati dedukcije tipa, odnosno naterati program da nastavi izvršavanje taman toliko da usko odredi sa kojim tipom podataka se radi. Problem kod ovog pristupa se javlja u slučajevima kada bismo u bloku koda koji treba da se izvrši da bismo dobili definitni tip željene promenljive postoji ugnježdena tačka zaustavljanja, što uništava linearnost inspekcije i debagovanja koda. 
+Iako je moguće zaustaviti program na bilo kom izrazu odnosno liniji radi inspekcije varijabli, nije moguće proveriti tip i vrednost varijabli koje već nisu izračunate. Ovo je posledica činjenice da se u Haskel-u ne vrši zaključivanje tipova tokom izvršavanja programa. Naravno, uvek je moguće forsirati dedukcije tipa, odnosno naterati program da nastavi izvršavanje taman toliko da usko odredi sa kojim tipom podataka se radi. Problem kod ovog pristupa se javlja u slučajevima kada bismo u bloku koda koji treba da se izvrši da bismo dobili definitni tip željene promenljive postoji ugnježdena tačka zaustavljanja, što uništava linearnost inspekcije i debagovanja koda. 
 
-Posledice ovog problema se mogu amortizovati uvođenjem parcijalnog izračuvanja tipa izraza, umesto izračunavanja vrednosti celog izraza. Kao i uvodjenje posebne komande za ispisivanje jos neevaluiranih vrednosti, ovo je vrlo korisno s obzirom da svaki tip pre nego što može konvencionalno da se ispisuje mora da ima implementiranu funckiju za prikazivanje (eng. {\em show}). Neevaluirane vrednosti Haskell rešava uvođenjem {\em obećanja} (eng. {\em thunk},Learn You a Haskell for Great Good), koje se uvek koriste pri lenjom izračunavanju. Nedostatak ove implementacije je to što bilo koji izraz koji se lenjo odseče i ne izračuna se do kraja (na primer desna strana izraza konjukcije gde je prvi argument{\em False}), što znači da ni obećanje koje se nalazilo u odsečenom delu izraza nikada neće biti evaluirano. 
+Posledice ovog problema se mogu amortizovati uvođenjem parcijalnog izračuvanja tipa izraza, umesto izračunavanja vrednosti celog izraza. Kao i uvodjenje posebne komande za ispisivanje jos neevaluiranih vrednosti, ovo je vrlo korisno s obzirom da svaki tip pre nego što može konvencionalno da se ispisuje mora da ima implementiranu funckiju za prikazivanje (eng. {\em show}). Neevaluirane vrednosti Haskel rešava uvođenjem {\em obećanja} (eng. {\em thunk},Learn You a Haskell for Great Good), koje se uvek koriste pri lenjom izračunavanju. Nedostatak ove implementacije je to što bilo koji izraz koji se lenjo odseče i ne izračuna se do kraja (na primer desna strana izraza konjukcije gde je prvi argument{\em False}), što znači da ni obećanje koje se nalazilo u odsečenom delu izraza nikada neće biti evaluirano. 
 
 
 \subsection{Trace}
 
-U tradicionalnim nefunckionalnim jezicima se podrazumeva postojanje debagera, koji prati tačnu sekvencu poziva koji su se izvršavali od pokretanja programa. Ovo je izutetno teško implementirati u programskim jezicima kao što je Haskell zbog toga što se izrazi i funkcije ne izračunavaju tačnim redosledom kojim su pozvani već se izračunavaju tek kada su potrebni za neko drugo izračunavanje (eng. {\em demand-driven execution}). Idealno rešenje bi bilo da se programera apstrahuje evaluacija koja bi izgledala što više kao ona u imperativnom jeziku, dok bi interno bio čuvan pravi redosled poziva i evaluacija, ovo rade neki Haskell debageri, ali GHCi nema tu funkcionalnost, odnosno ne pravi leksicki stek poziva (eng. {\em lexical call stack}) , on nam isključivo daje da na tackama zaustavljanja imamo pregled prethodnih koraka evaluiranja.
+U tradicionalnim nefunckionalnim jezicima se podrazumeva postojanje debagera, koji prati tačnu sekvencu poziva koji su se izvršavali od pokretanja programa. Ovo je izutetno teško implementirati u programskim jezicima kao što je Haskel zbog toga što se izrazi i funkcije ne izračunavaju tačnim redosledom kojim su pozvani već se izračunavaju tek kada su potrebni za neko drugo izračunavanje (eng. {\em demand-driven execution}). Idealno rešenje bi bilo da se programera apstrahuje evaluacija koja bi izgledala što više kao ona u imperativnom jeziku, dok bi interno bio čuvan pravi redosled poziva i evaluacija, ovo rade neki Haskel debageri, ali GHCi nema tu funkcionalnost, odnosno ne pravi leksicki stek poziva (eng. {\em lexical call stack}) , on nam isključivo daje da na tackama zaustavljanja imamo pregled prethodnih koraka evaluiranja.
 %TODO: dodati sajt u source za demand-driven execution: https://downloads.haskell.org/~ghc/7.6.3/docs/html/users_guide/ghci-debugger.html
 
 
@@ -117,7 +117,7 @@ Het (eng. {\em Hat -- {\bf \em Ha}skell {\bf \em t}racer}) je alat koji se koris
 i nadziranje tako generisanog {\em traga} \cite{chitil2002transforming}. Smatra se jednim od najnaprednijih alata za debagovanje u Haskelu. Prednost alata Het u odnosu na ostale alate za debagovanje 
 se ogleda upravo u upotrebi {\em traga}, jer se programeru pruža pogled unutar ``crne kutije'', tj. sva izračunavanja u našem Haskel programu bivaju razmotana u niz redukcija koja programer može da analizira korišćenjem različitih interaktivnih alata, pri čemu svaki od njih na različite načine interpretira generisane tragove i omogućava široki spektar analiza izračunavanja Haskel programa.
 Ovaj alat nije deo nekog prevodioca ili interpretatora za programski jezik Haskel,
-što se moglo smatrati prednošću u vremenu kada se su se koristili različiti prevodioci za Haskel programski jezik, pa samo njegovo postojanje i održavanje nije bilo tesno vezano za postojanje i održavanje nekog specifičnog prevodioca, odnosno interpretatora \cite{chitil2002transforming}. Međutim danas, u vremenu kada je {\em GHC} ({\em GHC -- Glasgow Haskell Compiler}) najpristupačniji Haskell prevodilac, ta osobina Heta ne mora da se nužno smatra prednošću, uzimajući u obzir da se sa konstantnim izlaskom novih verzija {\em GHC}-a javlja potreba za konstantnim održavanjem.
+što se moglo smatrati prednošću u vremenu kada se su se koristili različiti prevodioci za Haskel programski jezik, pa samo njegovo postojanje i održavanje nije bilo tesno vezano za postojanje i održavanje nekog specifičnog prevodioca, odnosno interpretatora \cite{chitil2002transforming}. Međutim danas, u vremenu kada je {\em GHC} ({\em GHC -- Glasgow Haskell Compiler}) najpristupačniji Haskel prevodilac, ta osobina Heta ne mora da se nužno smatra prednošću, uzimajući u obzir da se sa konstantnim izlaskom novih verzija {\em GHC}-a javlja potreba za konstantnim održavanjem.
 U ovom radu naglasak će biti na korišćenju alata Het kao debagera, no on može da se koristi i u svrhe posmatranja kako funkcioniše korektno napisan Haskel program \cite{wallace2001multiple}.
 Nažalost, usled zastarelosti biblioteka koje koristi alat Het, autori rada nisu uspeli da osposobe alat na svojim mašinama nakon više pokušaja. 
 %TODO: ovde bi trebalo dodati rečenicu koja naglašava da debagovanje u Haskelu samim tim nije bas ``najudobnije'', makar sto se tice Heta 
@@ -178,8 +178,8 @@ Naziv alata & Opis\\ \hline
 \footnotetext[1]{Stek je {\em virtuelni} zato što je u stvarnom steku izračunavanja Haskel programa omogućeno {\em lenjo izračunavanje}, dok se kod virtuelnog steka prikazuje kakav bi bio stek u slučaju strogog izračunavanja.} 
 
 \section{HOOD Debager}
-Hud (eng. {\em HOOD -- Haskell Object Observation Debugger}) je mali debager za Haskell, baziran na posmatranju struktura podataka dok se prosleđuju između funkcija.
-Implementiran je kao nezavisna biblioteka koju je moguće koristiti iz bilo kog Haskell kompajlera, što ga izdvaja u odnosu na ostale debagere.
+Hud (eng. {\em HOOD -- Haskell Object Observation Debugger}) je mali debager za Haskel, baziran na posmatranju struktura podataka dok se prosleđuju između funkcija.
+Implementiran je kao nezavisna biblioteka koju je moguće koristiti iz bilo kog Haskel kompajlera, što ga izdvaja u odnosu na ostale debagere.
 Korišćenje huda je relativno prosto. Prvo se vrši umetanje funkcije {\em observe} ispred objekta koji se posmatra ili između dve funkcije čije međustanje želimo da posmatramo.
 Nakon toga program se izvršava, a zatim se vrši ispis stanja objekata koji su posmatrani.
 Tip ove funkcije je:\newline \newline
@@ -191,7 +191,7 @@ observe :: (Observable a) => String -> a -> a
 gde je prvi argument labela kojom obeležavamo ispis, a drugi je objekat koji se posmatra.
 Kao što se vidi u potpisu funkcije, postoji tipsko ograničenje tj. posmatrani objekat mora da bude klase {\em Observable}, što je već implementirano za osnovne tipove.
 Za svaki novi tip koji se napravi nepohodno je da  pridruži ovoj klasi, ako želimo da ga posmatramo.
-Što se tiče Haskell-a, {\em observe} se ponaša kao funkcija identiteta s tim što čuva podatke za kasnije čitanje.
+Što se tiče Haskel-a, {\em observe} se ponaša kao funkcija identiteta s tim što čuva podatke za kasnije čitanje.
 U jednom programu je moguće imati više poziva funkcije observe, koje razlikujemo korišćenjem labela.
 Takođe je moguće posmatrati bilo koji izraz, a ne samo međustanja funkcijskih poziva.
 Pozivi funkcije {\em observe} ne zahtevaju dodatna izračunavanja posmatranog objekta što ide u prilog efikasnosti ovog alata.
@@ -306,7 +306,7 @@ pr6 = print ((observe "length" :: Observing([Int] -> Int))
 }
 \end{lstlisting}
 Funkcija {\em observe} sada prima tri argumenta: labelu, funkciju(length) i njen argument. 
-Ovako Haskell program tumači ovaj izraz:
+Ovako Haskel program tumači ovaj izraz:
 \begin{lstlisting}[language=Haskell]
 (observe "length" :: Observing ([Int] -> Int)) length [1..3]
 -- uklanja se anotacija tipa posmatrane funkcije
@@ -375,7 +375,7 @@ U ovom primeru vidimo koliko je hud moćan alat i sa kojom se lakoćom koristi.
 
 \section{Debagovanje korišćenjem Debug biblioteke}
 Debug biblioteka je kreirana or strane Nila Mičela(eng. {\em Neil Mitchell}) zarad laganog debagovanja Haskell programa. Fokus ove biblioteke jeste na jednostavnosti korišćenja i intuitivnom interfejsu. Pošto je u pitanju Haskell biblioteka, ona ne zavisi od eksternih alata, što znatno olakšava njeno korišćenje i održavanje. Debug pri korišćenju generiše trag (eng. {\em trace}) i omogućava jasno praćenje generisanog traga kroz svako pozivanje funkcije \cite{chitil2002transforming}.
-Mitchellov Debug se može integrisati u Haskell program na više načina, najčešće putem enkapsuliranja programskog koda u okviru debug funkcije. 
+Mitchellov Debug se može integrisati u Haskel program na više načina, najčešće putem enkapsuliranja programskog koda u okviru debug funkcije. 
 
 Program koji ćemo koristiti za demonstraciju debug biblioteke se sastoji od 3 funkcije, sve tri treba da od niza elemenata koji se mogu porediti izvuku broj elemenata veći od početnog.
 
