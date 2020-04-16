@@ -35,7 +35,7 @@
   frame=single,	                   % adds a frame around the code
   keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
   keywordstyle=\color{blue},       % keyword style
-  language=Python,                 % the language of the code
+  language=Haskell,                 % the language of the code
   morekeywords={*,...},            % if you want to add more keywords to the set
   numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
   numbersep=5pt,                   % how far the line-numbers are from the code
@@ -73,13 +73,13 @@ Ovaj seminarski rad obrađuje temu debagovanja u Haškel-u, odnosno da li je u d
 
 
 {
-\emph{Softverski bag} je se može definisati kao bilo koje nepredviđeno ponašanje programa. Popravljanje programa u kome su prisutni bagovi se sastoji iz sistematičnog proveravanja odlika odnosno željenog ponašanja programa, odnosno da li dobijemo očekivani izlaz za dati ulaz. Poenta ovog procesa jeste da nađemo scenario u kome program ne daje poželjnu povratnu informaciju. Ovom postupku najčešće sledi lociranje uzroka problema, iako je moguće da samim ispitivanjem postojanja baga implicitno dobijemo dovoljno informacija o njegovoj lokaciji. Ovaj proces se naziva \textbf{debagovanje}.\cite{stallman2002debugging}\\
+\emph{Softverski bag} se može definisati kao bilo koje nepredvideno ponašanje programa. Popravljanje programa u kome su prisutni bagovi se sastoji iz sistematičnog proveravanja željenog ponašanja programa, tj. da li dobijamo očekivani izlaz za dati ulaz. Poenta ovog procesa jeste da nađemo scenario u kome program ne daje poželjnu povratnu informaciju. Ovom postupku najčešće sledi lociranje uzroka problema, ali je isto tako moguće da samim ispitivanjem postojanja baga implicitno dobijemo dovoljno informacija o njegovoj lokaciji. Ovaj proces se naziva debagovanje. \textbf{debagovanje}\cite{stallman2002debugging}.\\
 
-Pošto ovaj proces najčešće nije toliko jednostavan, oformili su se razni principi, metodologije i alati za debagovanje. Međutim oni su se razvijali primarno za imperativne jezike, što znači da većina njih nije efektna na Haskelu, koji je čist funkcionalni jezik. Jedna od najbitnijih karakteristika programskog jezika Haskel je sam dizajn jezika, koji podstiče pisanje bezbednog i robusnog koda. Ovome najviše doprinosi stroga dinamička tipiziranost, što znači da interpreter javlja grešku istog momenta kada ne može da sigurno odredi tipove tj. potpise svih funkcija. Jos jedna vrlo bitna karakteristika za spomenuti je da Haskell podržava funkcije višeg reda kao i lenjo tj. nepotpuno izračunavanje. Ova karateristika drastično smanjuje efektnost tradicionalnih debagera pri korišćenju u tandemu sa Haskelom. \cite{pope2006declarative}\\
+Pošto ovaj proces najčešće nije toliko jednostavan, oformili su se razni principi, metodologije i alati za debagovanje. Međutim oni su se razvijali primarno za imperativne jezike, što znači da većina njih nije efektna na Haskelu, koji je čist funkcionalni jezik. Jedna od najbitnijih karakteristika programskog jezika Haskel je sam dizajn jezika, koji podstiče pisanje bezbednog i robusnog koda. Ovome najviše doprinosi stroga dinamička tipiziranost, što znači da interpretator javlja grešku istog momenta kada ne može sa sigurnošću da odredi tipove tj. potpise svih funkcija. Jos jedna vrlo bitna karakteristika za spomenuti je da Haskel podržava funkcije višeg reda kao i lenjo tj. nepotpuno izračunavanje. Ova karateristika drastično smanjuje efektnost tradicionalnih debagera pri korišćenju u tandemu sa Haskelom\cite{pope2006declarative}.\\
 
-Da bismo razumeli proces debagovanja Haskel programa, moramo se prvo osvrnuti na originalne osnovne principe debagovanja. Jedno od prvih i najzastupljenijih mišljenja o debagovanju je da programski kod treba dokazati kao svaki matematički dokaz, samim tim, u teoriji, eliminišući potrebu za debagovanjem. Ovaj princip je iz mnogo razloga bio nepogodan jer su se programski jezici razvijali u smeru koji ih je činio sve teže dokazivim.\cite{pope2006declarative} \\
+Da bismo razumeli proces debagovanja Haskel programa, moramo se prvo osvrnuti na originalne osnovne principe debagovanja. Jedno od prvih i najzastupljenijih mišljenja o debagovanju je da programski kod treba dokazati kao svaki matematički dokaz, samim tim, u teoriji, eliminišući potrebu za debagovanjem. Ovaj princip je iz mnogo razloga bio nepogodan jer su se programski jezici razvijali u smeru koji ih je činio sve teže dokazivim\cite{pope2006declarative}. \\
 
-Izuzetak ovom razvitku je strukturalni stil programiranja, koji propagira da se programi pišu u vrlo jednostavnim nezavisnim celinama. Ovaj princip je implementiran u mnogim programskim jezicima kroz procedure, funckije i predikate. Za razliku od ostalih programskih jezika, Haskel u svojoj srži ima strukturni stil programiranja, time ohrabrujući njegovo matematičko dokazivanje.\cite{pope2006declarative}
+Izuzetak ovom razvitku je strukturalni stil programiranja, koji propagira da se programi pišu u vrlo jednostavnim nezavisnim celinama. Ovaj princip je implementiran u mnogim programskim jezicima kroz procedure, funckije i predikate. Za razliku od ostalih programskih jezika, Haskel u svojoj srži ima strukturni stil programiranja, time ohrabrujući njegovo matematičko dokazivanje\cite{pope2006declarative}.
 
 \section{Matematičko dokazivanje}
 
@@ -88,7 +88,7 @@ Za Haskel se veoma lako nalazi analogon na formalno matematičkom jeziku, zbog t
 \begin{lstlisting}[language=Haskell,caption={Rekurzivno definisanje liste u Haskelu},frame=single, label=simple]
 data Lista x = PraznaLista | Cons a (Lista x)
 \end{lstlisting}
-Znajući ovo, vrlo lako možemo dokazati korektnost programa koji koriste liste uz pomoć matematičke indukcije, gde bi nam baza indukcije bio slučaj prazne liste, a induktivni korak rekurzivni poziv liste koju dobijamo dodajuci neki broj elemenata na listu za koju pretpostavimo da važi funkcija na osnovu induktivne hipoteze, kao na primer:
+Znajući ovo, vrlo lako možemo dokazati korektnost programa koji koriste liste uz pomoć matematičke indukcije, gde bi nam baza indukcije bila slučaj prazne liste, a induktivni korak rekurzivni poziv liste čijom dekonstrukcijom dobijamo izolovani element, kao i listu za koju smo pretpostavili da važi induktivna hipoteza, kao na primer:
 \begin{lstlisting}[caption={Primer rekurzivno definisane funkcije},frame=single, label=simple]
 sum :: [Int] -> Int
 -- baza indukcije
@@ -100,13 +100,13 @@ sum (x:xs) = x + sum xs
 
 
 \section{GHCi Debager}
-GHCi debager nam omogućava da u željenim momentima zaustavimo program i proverimo vrednosti pojedinačnih promenljivih preko {\em tačaka zaustavljanja} (eng.~{\em breakpoints}). Takodje vrlo bitna funkcionalnost je korak-po-korak izvršavanje programa sa zaustavljanjem. Izuzetak od ove funkcionalnosti su vec prekompilirane importovane biblioteke u koje nije moguće ući u okviru međukoraka.
+GHCi debager nam omogućava da u željenim momentima zaustavimo program i proverimo vrednosti pojedinačnih promenljivih preko {\em tačaka zaustavljanja} (eng.~{\em breakpoints}). Takodje vrlo bitna funkcionalnost je korak po korak izvršavanje programa sa zaustavljanjem. Izuzetak od ove funkcionalnosti su vec prekompilirane biblioteke u koje nije moguće ući u okviru međukoraka.
 
 
 \subsection{Tačke zaustavljanja i inspekcija varijabli}
 Iako je moguće zaustaviti program na bilo kom izrazu odnosno liniji radi inspekcije varijabli, nije moguće proveriti tip i vrednost varijabli koje već nisu izračunate. Ovo je posledica činjenice da se u Haskel-u ne vrši zaključivanje tipova tokom izvršavanja programa. Naravno, uvek je moguće forsirati dedukcije tipa, odnosno naterati program da nastavi izvršavanje taman toliko da usko odredi sa kojim tipom podataka se radi. Problem kod ovog pristupa se javlja u slučajevima kada bismo u bloku koda koji treba da se izvrši da bismo dobili definitni tip željene promenljive postoji ugnježdena tačka zaustavljanja, što uništava linearnost inspekcije i debagovanja koda. 
 
-Posledice ovog problema se mogu amortizovati uvođenjem parcijalnog izračuvanja tipa izraza, umesto izračunavanja vrednosti celog izraza. Kao i uvodjenje posebne komande za ispisivanje jos neevaluiranih vrednosti, ovo je vrlo korisno s obzirom da svaki tip pre nego što može konvencionalno da se ispisuje mora da ima implementiranu funckiju za prikazivanje (eng. {\em show}). Neevaluirane vrednosti Haskel rešava uvođenjem {\em obećanja} (eng. {\em thunk},Learn You a Haskell for Great Good), koje se uvek koriste pri lenjom izračunavanju. Nedostatak ove implementacije je to što bilo koji izraz koji se lenjo odseče i ne izračuna se do kraja (na primer desna strana izraza konjukcije gde je prvi argument{\em False}), što znači da ni obećanje koje se nalazilo u odsečenom delu izraza nikada neće biti evaluirano. 
+Posledice ovog problema se mogu amortizovati uvođenjem parcijalnog izračuvanja tipa izraza, umesto izračunavanja vrednosti celog izraza. Kao i uvodjenje posebne komande za ispisivanje jos neevaluiranih vrednosti, ovo je vrlo korisno s obzirom da svaki tip pre nego što može konvencionalno da se ispisuje mora da ima implementiranu funckiju za prikazivanje (eng. {\em show}). Neevaluirane vrednosti Haskel rešava uvođenjem {\em obećanja} (eng. {\em thunk}), koje se uvek koriste pri lenjom izračunavanju. Nedostatak ove implementacije je to što bilo koji izraz koji se lenjo odseče i ne izračuna se do kraja (na primer desna strana izraza konjukcije gde je prvi argument{\em False}), što znači da ni obećanje koje se nalazilo u odsečenom delu izraza nikada neće biti evaluirano.\cite{lipovaca2011learn} 
 
 
 \subsection{Trace}
