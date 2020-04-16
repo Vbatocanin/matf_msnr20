@@ -54,14 +54,14 @@
 
 \title{Debagovati u Haskelu ili ne, pitanje je sad\\ \small{Seminarski rad u okviru kursa\\Metodologija stručnog i naučnog rada\\ Matematički fakultet}}
 
-\author{Vladimir Batoćanin, Stefan Stefanović, Jovan Lezaja, Đorđe Jovanović}
+\author{Vladimir Batoćanin 074/2016 vladimir@wings.rs,\\Stefan Stefanović,\\Jovan Ležaja,\\Đorđe Jovanović}
 
 %\date{9.~april 2015.}
 
 \maketitle
 
 \abstract{
-Ovaj seminarski rad obrađuje temu debagovanja u Haskel-u, odnosno da li je u dotičnom jeziku moguće tradicionalno debagotati i ako ne, zašto?  Kakva je podrška za debagovanje u ugrađenom debageru i koliko su pouzdani drugi debageri, i da li ima smisla uopste debagovati Haskel kod sa necim osim GHCi-a. Osim GHCi debagera, obrađeni su Hud debager, Hat alat i Debug biblioteka. Za svaki debager su obrađeni najkorišćenije funkcije i prednosti i mane istih. Za Hud debager je obrađen i objašnjen strukturno orijentisan metod debagovanja, podržanost u različitim kompajlerima i rasprostranjenost.Dok je za Het alat i Debug biblioteku je obrađeno generisanje i analiza traga, kao i pregled interaktivih alata koji na različite načine analiziraju program i pomažu programeru pri debagovanju.
+Ovaj seminarski rad obrađuje temu debagovanja u Haškel-u, odnosno da li je u dotičnom jeziku moguće tradicionalno debagotati i ako ne, zašto?  Kakva je podrška za debagovanje u ugrađenom debageru i koliko su pouzdani drugi debageri, i da li ima smisla uopšte debagovati Haškel kod sa nečim osim GHCi-a. Osim GHCi debagera, obrađeni su Hud debager, Hat alat i Debug biblioteka. Za svaki debager su obrađeni najkorišćenije funkcije i prednosti i mane istih. Za Hud debager je obrađen i objašnjen strukturno orijentisan metod debagovanja, podržanost u različitim kompajlerima i rasprostranjenost.Dok je za Het alat i Debug biblioteku obrađeno generisanje i analiza traga, kao i pregled interaktivih alata koji na različite načine analiziraju program i pomažu programeru pri debagovanju. Za potpuno razumevanja rada je predviđeno barem bazično predznanje Haskela.
 
 \setcounter{tocdepth}{1} % show only sections in table of contents
 \tableofcontents
@@ -73,16 +73,19 @@ Ovaj seminarski rad obrađuje temu debagovanja u Haskel-u, odnosno da li je u do
 
 
 {
-Debagovanje je proces detektovanja i otklanjanja postojećih ili potencijalnih grešaka u našem kodu. Postoji više metoda analiziranja naseg koda od kojih su najpoznatiji analiziranje unapred i unazad. (eng. {\em forward and backwards analysis})\cite{geeks_for_geeks}. Gde prva metoda podrazumeva da pokušamo da od pokretanja programa prouzrokujemo željenu grešku idenjem po jedan korak napred, dok se drugi metod primenjuje kada se već dogodila greška, tada pokušamo da joj zaključimo izvor tako što idemo po jedan korak unazad. Ova definicija tradicionalno podrazumeva korišćenje imperativnih programskih jezika, zbog toga je priča o debagovanju funkcionalnog koda malo komplikovanija. 
-\\ \\
-Dizajn programskog jezika Haskel je takav da programerovo vreme provedeno za kodom je manje debagujući, a više trudeći se da inicijalno napiše ispravan i robustan kod. Ovo stanovište se može braniti činjenicom da je Haskel čist funkcionalni jezik, što znači da je dosta pouzdana praksa izolovano testiranje svake funkcije, kao i stroga tipiziranost, koja drastično smanjuje šansu da se programer vrati na prethodno napisani deo koda. 
-\\ \\
-Ovo u idealnim slučajevima važi, s tim što ovo ne uključuje slučaj gde programer napravi semantičku grešku koja prolazi fazu prevodjenja, kao i slučajeve gde potpisi funkcija nisu ispravni, nisu potpuni ili su prosto nepostojeći. Ovo sve dovodi do odloženih rafalnih grešaka ili do pojave teško uočljivih bagova. Tada nam je potreban neki metod da i otkrijemo uzrok te greške da bismo je i otklonili.}
+\emph{Softverski bag} je se može definisati kao bilo koje nepredviđeno ponašanje programa. Popravljanje programa u kome su prisutni bagovi se sastoji iz sistematičnog proveravanja odlika odnosno željenog ponašanja programa, odnosno da li dobijemo očekivani izlaz za dati ulaz. Poenta ovog procesa jeste da nađemo scenario u kome program ne daje poželjnu povratnu informaciju. Ovom postupku najčešće sledi lociranje uzroka problema, iako je moguće da samim ispitivanjem postojanja baga implicitno dobijemo dovoljno informacija o njegovoj lokaciji. Ovaj proces se naziva \textbf{debagovanje}.\cite{stallman2002debugging}\\
+
+Pošto ovaj proces najčešće nije toliko jednostavan, oformili su se razni principi, metodologije i alati za debagovanje. Međutim oni su se razvijali primarno za imperativne jezike, što znači da većina njih nije efektna na Haskelu, koji je čist funkcionalni jezik. Jedna od najbitnijih karakteristika programskog jezika Haskel je sam dizajn jezika, koji podstiče pisanje bezbednog i robusnog koda. Ovome najviše doprinosi stroga dinamička tipiziranost, što znači da interpreter javlja grešku istog momenta kada ne može da sigurno odredi tipove tj. potpise svih funkcija. Jos jedna vrlo bitna karakteristika za spomenuti je da Haskell podržava funkcije višeg reda kao i lenjo tj. nepotpuno izračunavanje. Ova karateristika drastično smanjuje efektnost tradicionalnih debagera pri korišćenju u tandemu sa Haskelom. \cite{pope2006declarative}\\
+
+Da bismo razumeli proces debagovanja Haskel programa, moramo se prvo osvrnuti na originalne osnovne principe debagovanja. Jedno od prvih i najzastupljenijih mišljenja o debagovanju je da programski kod treba dokazati kao svaki matematički dokaz, samim tim, u teoriji, eliminišući potrebu za debagovanjem. Ovaj princip je iz mnogo razloga bio nepogodan jer su se programski jezici razvijali u smeru koji ih je činio sve teže dokazivim.\cite{pope2006declarative} \\
+
+Izuzetak ovom razvitku je strukturalni stil programiranja, koji propagira da se programi pišu u vrlo jednostavnim nezavisnim celinama. Ovaj princip je implementiran u mnogim programskim jezicima kroz procedure, funckije i predikate. Za razliku od ostalih programskih jezika, Haskel u svojoj srži ima strukturni stil programiranja, time ohrabrujući njegovo matematičko dokazivanje.\cite{pope2006declarative}
 
 \section{Matematičko dokazivanje}
 
-Za funkcionalnu paradigmu se veoma lako nalazi analogon na formalno matematičkom jeziku, što nam dozvoljava da već u fazi inicijalnog pisanja koda dokažemo da je naš program matematički korektan. U ovom kontekstu se najčešće koristi metod {\em struktruralne indukcije}  (eng.~{\em structural induction}). Ovo je moguće isključivio zbog rekurzivno definisanih struktura podataka u Haskel-u\cite{craftOfFuncProg}, pri čemu se koristi operator | (ili) koji označava matematičku uniju.
-\begin{lstlisting}[caption={Rekurzivno definisanje liste u Haskel-u},frame=single, label=simple]
+Za Haskel se veoma lako nalazi analogon na formalno matematičkom jeziku, zbog toga što strukturni dizajn implementira do na strukture podataka. Pošto su one vrlo temeljno definisane, moguće je indukcijom uopštiti program od baznog slučaja ka mnogo kompleksnijim. Ovo nam dozvoljava da već u fazi inicijalnog pisanja k\^{o}da dokažemo da je naš program matematički korektan. U ovom kontekstu se najčešće koristi metod {\em struktruralne indukcije}  (eng.~{\em structural induction}). Ovo je moguće isključivio zbog rekurzivno definisanih struktura podataka u Haskelu, pri čemu se koristi operator | (ili) koji označava matematičku uniju.\cite{craftOfFuncProg}
+\newpage
+\begin{lstlisting}[language=Haskell,caption={Rekurzivno definisanje liste u Haskelu},frame=single, label=simple]
 data Lista x = PraznaLista | Cons a (Lista x)
 \end{lstlisting}
 Znajući ovo, vrlo lako možemo dokazati korektnost programa koji koriste liste uz pomoć matematičke indukcije, gde bi nam baza indukcije bio slučaj prazne liste, a induktivni korak rekurzivni poziv liste koju dobijamo dodajuci neki broj elemenata na listu za koju pretpostavimo da važi funkcija na osnovu induktivne hipoteze, kao na primer:
@@ -191,7 +194,7 @@ observe :: (Observable a) => String -> a -> a
 gde je prvi argument labela kojom obeležavamo ispis, a drugi je objekat koji se posmatra.
 Kao što se vidi u potpisu funkcije, postoji tipsko ograničenje tj. posmatrani objekat mora da bude klase {\em Observable}, što je već implementirano za osnovne tipove.
 Za svaki novi tip koji se napravi nepohodno je da  pridruži ovoj klasi, ako želimo da ga posmatramo.
-Što se tiče Haskel-a, {\em observe} se ponaša kao funkcija identiteta s tim što čuva podatke za kasnije čitanje.
+Što se tiče Haskela, {\em observe} se ponaša kao funkcija identiteta s tim što čuva podatke za kasnije čitanje.
 U jednom programu je moguće imati više poziva funkcije observe, koje razlikujemo korišćenjem labela.
 Takođe je moguće posmatrati bilo koji izraz, a ne samo međustanja funkcijskih poziva.
 Pozivi funkcije {\em observe} ne zahtevaju dodatna izračunavanja posmatranog objekta što ide u prilog efikasnosti ovog alata.\cite{declarative}

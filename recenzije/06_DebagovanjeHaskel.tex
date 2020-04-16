@@ -1,0 +1,281 @@
+
+
+ % !TEX encoding = UTF-8 Unicode
+
+\documentclass[a4paper]{report}
+
+\usepackage[T2A]{fontenc} % enable Cyrillic fonts
+\usepackage[utf8x,utf8]{inputenc} % make weird characters work
+\usepackage[serbian]{babel}
+%\usepackage[english,serbianc]{babel}
+\usepackage{amssymb}
+
+\usepackage{color}
+\usepackage{url}
+\usepackage[unicode]{hyperref}
+\hypersetup{colorlinks,citecolor=green,filecolor=green,linkcolor=blue,urlcolor=blue}
+
+\newcommand{\odgovor}[1]{\textcolor{blue}{#1}}
+
+\begin{document}
+
+\title{Dopunite naslov svoga rada\\ \small{Dopunite autore rada}}
+
+\maketitle
+
+\tableofcontents
+
+\chapter{Uputstva}
+\emph{Prilikom predavanja odgovora na recenziju, obrišite ovo poglavlje.}
+
+Neophodno je odgovoriti na sve zamerke koje su navedene u okviru recenzija. Svaki odgovor pišete u okviru okruženja \verb"\odgovor", \odgovor{kako bi vaši odgovori bili lakše uočljivi.} 
+\begin{enumerate}
+
+\item Odgovor treba da sadrži na koji način ste izmenili rad da bi adresirali problem koji je recenzent naveo. Na primer, to može biti neka dodata rečenica ili dodat pasus. Ukoliko je u pitanju kraći tekst onda ga možete navesti direktno u ovom dokumentu, ukoliko je u pitanju duži tekst, onda navedete samo na kojoj strani i gde tačno se taj novi tekst nalazi. Ukoliko je izmenjeno ime nekog poglavlja, navedite na koji način je izmenjeno, i slično, u zavisnosti od izmena koje ste napravili. 
+
+\item Ukoliko ništa niste izmenili povodom neke zamerke, detaljno obrazložite zašto zahtev recenzenta nije uvažen.
+
+\item Ukoliko ste napravili i neke izmene koje recenzenti nisu tražili, njih navedite u poslednjem poglavlju tj u poglavlju Dodatne izmene.
+\end{enumerate}
+
+Za svakog recenzenta dodajte ocenu od 1 do 5 koja označava koliko vam je recenzija bila korisna, odnosno koliko vam je pomogla da unapredite rad. Ocena 1 označava da vam recenzija nije bila korisna, ocena 5 označava da vam je recenzija bila veoma korisna. 
+
+NAPOMENA: Recenzije ce biti ocenjene nezavisno od vaših ocena. Na osnovu recenzije ja znam da li je ona korisna ili ne, pa na taj način vama idu negativni poeni ukoliko kažete da je korisno nešto što nije korisno. Vašim kolegama šteti da kažete da im je recenzija korisna jer će misliti da su je dobro uradili, iako to zapravo nisu. Isto važi i na drugu stranu, tj nemojte reći da nije korisno ono što jeste korisno. Prema tome, trudite se da budete objektivni. 
+\chapter{Recenzent \odgovor{--- ocena:} }
+
+
+\section{O čemu rad govori?}
+% Напишете један кратак пасус у којим ћете својим речима препричати суштину рада (и тиме показати да сте рад пажљиво прочитали и разумели). Обим од 200 до 400 карактера.
+U radu je prikazano nekoliko načina debagovanja u Haskelu. Prvo je opisan GHCi ugrađeni debager kao i neke prednosti koje nam daje sama funkcionalna paradigma. Zatim je opisan alat Het i način debagovanja sa njim kroz ostavljanje i pregleda traga. Primerima su prikazani Hud debager, korišćenjem funkcije observe iz Huda i načini debagovanja korišćenjem Debug biblioteke. 
+
+\section{Krupne primedbe i sugestije}
+% Напишете своја запажања и конструктивне идеје шта у раду недостаје и шта би требало да се промени-измени-дода-одузме да би рад био квалитетнији.
+Neki delovi teksta su jako loše napisani, gotovo da ih nisam razumeo. Celo poglavlje 3 nije dobro objašnjeno, ceo tekst je aljkavo napisan, podnaslovi nisu adekvatni kao da se ne odnose na taj pasus. \\
+Poglavlje 5, nije lepo strukturirano, nazivi primera su deo teksta, treba ih dodati ispod svakog primera kao opis, a u samom tekstu dodati reference na taj primer kako bi bilo jasnije na šta se odnosi. Ima previše primera, moglo bi biti i manje. Možda podeliti na osnovne primere, primere sa listama i primere sa funkcijama. \\
+Poglavlje 6, takođe nije dobro struktuirano, nije najjasnije na koju sliku se koji deo odnosi. Prvi pasus ispod slike 2 bi trebao malo bolje da opiše šta je na toj slici jer mi je trebalo vremena da ukapiram šta levo i slike su jako sitne i nepregledne. Poglavlje 6.2 je previše kratko, izbaciti ga kao poglavlje ili staviti da taj pasus bude deo prethodnog poglavlja ili detaljnije opisati i dodati tekst u to poglavlje. U celom poglavlju 6 treba dodati citate. 
+\section{Sitne primedbe}
+% Напишете своја запажања на тему штампарских-стилских-језичких грешки
+Kao što sam već napisao neki delovi su loše napisani, pa samim tim naišao sam na dosta štamparskih grešaka. Prvo bih napomenuo da se između sebe niste lepo dogovorili kako ćete da oslovljavate Haskell, negde ima jedno l negde ima dva l, negde stavite ctricu nakon naziva. Takođe, sve nazive alata bi trebalo slično da oslovljavate kao Het i Hud. Svuda ste pisali kod umesto k\^{o}d, osim na jednom mestu (strana 6, pred kraj drugog pasusa). U LaTeX šablonu za seminarski ste mogli i da vidite kako se to piše. Prepaviti da piše slovo Đ umesto DJ. Trebali bi da stilizujete ključne reči u bold, neki izrazi i nazivi u italic, poglavlje 4 bi trebalo da vam bude osnova kako ceo tekst treba da izgleda, nekako mi se čini da je taj deo najlepše napisan. Ovo su primedbe za ceo tekst, a sada slede po delovima.\\
+Sažetak, Uvod, Poglavlja 2 i 3 imaju dosta ošišane latinice i to treba prepraviti. Primeri počinju sa Listing promeniti da počinju sa Primer (ovo važi i za ostatk teksta). U sažetku u drugoj rečenici promeniti \emph{...debageru, (zarez) koliko su pouzdani drugi debageri i (bez zareza) da li...}.
+Treba dodati razmak posle tačke posle pete rečenice.\\
+Poglavlje 3.1 u drugom pasusu mi se čini da je loše napisan citat, Learn You a Haskell for Great Good je knjiga? Poglavlje 3.2, prepraviti štamparsku grešku nefunckionalnim i razmak nakon zagrade.\\
+Poglavlje 4 strana 4, u osmom redu ima jedno "se" više. Poglavlje 4.2 može da se izbaci \emph{eng. Freja} s obzirom da je na srpskom isto napisano.\\
+Poglavlje 5, promeniti da se citati nalaze pre tačke. Neki od pasusa nisu uvučeni. \\
+Poglavlje 6, u prvom redu štamparska greška or promeniti u od, u istom pasusu se može izbaciti eng. trace jer je već navedeno da trag znači trace u nekom od prvih poglavlja. Poglvlje 6.1, u drugog pasusu treba tačka umesto crtice. Poglavlje 6.2, na 12 strani promeniti če u će. Poglavlje 6.3, promeniti \emph{tako da će njegovi korisnici potencijalno imati} nekako mi se čini razumljivije. \\ U literaturi je ostalo \emph{on-line at}, ja bih to izbacio skroz.
+\\ Takođe treba napomenuti da je prezime trećeg kolege loše napisano.
+\section{Provera sadržajnosti i forme seminarskog rada}
+% Oдговорите на следећа питања --- уз сваки одговор дати и образложење
+
+\begin{enumerate}
+\item Da li rad dobro odgovara na zadatu temu?\\
+Da, osim prve oblasti koja mi se čini da nije dovoljno odgovorila na zadatu temu.
+\item Da li je nešto važno propušteno?\\
+Jeste, nije lepo objašnjen ugrađeni GHCi debager i smatram da je taj deo propušten.
+\item Da li ima suštinskih grešaka i propusta?\\
+Da, kao što sam već gore napisao.
+\item Da li je naslov rada dobro izabran?\\
+Jeste, jer je naslov upitan, a na neki način u zaključku možemo da nađemo odgovor.
+\item Da li sažetak sadrži prave podatke o radu?\\
+Da, zaista jeste obrađeno sve što piše u sažetku.
+\item Da li je rad lak-težak za čitanje?\\
+Delovi rada su bili jako teški za čitanje.
+\item Da li je za razumevanje teksta potrebno predznanje i u kolikoj meri?\\
+Nije, dosta je prikazano na primerima, a sami primeri su bili dovoljno jednostavni.
+\item Da li je u radu navedena odgovarajuća literatura?\\
+Jeste, sva literatura koja je navedena jeste odgovarajuća.
+\item Da li su u radu reference korektno navedene?\\
+Na nekim delovima ni nema referenci.
+\item Da li je struktura rada adekvatna?\\
+Delovi rada su loše struktirani, takođe se oseti razlika prelaza između delova koje nija pisala ista osoba.
+\item Da li rad sadrži sve elemente propisane uslovom seminarskog rada (slike, tabele, broj strana...)?\\
+Iako ima tri slike, mislim da slike nisu dovoljno originalne i da su trebali da osmisle sliku sličnu kao što smo vežbali na času.
+\item Da li su slike i tabele funkcionalne i adekvatne?\\
+Osim slika u 6 poglavlju koje su sitne (čitao sam sa papira koje sam odštampao), sve ostalo je funkcionalno i adekvatno.
+\end{enumerate}
+
+\section{Ocenite sebe}
+% Napišite koliko ste upućeni u oblast koju recenzirate: 
+% a) ekspert u datoj oblasti
+% b) veoma upućeni u oblast
+% c) srednje upućeni
+% d) malo upućeni 
+% e) skoro neupućeni
+% f) potpuno neupućeni
+% Obrazložite svoju odluku
+
+Veoma upućen u oblast, iako nisam slušao predmet funcionalno  programiranje uspeo sam da razumem stvari koje se odnose na sam Haskell, a samo debagovanje mi jeste interesatna oblast i smatram da sam u oblast poprilično upućen.
+
+\chapter{Recenzent \odgovor{--- ocena:} }
+
+
+\section{O čemu rad govori?}
+% Напишете један кратак пасус у којим ћете својим речима препричати суштину рада (и тиме показати да сте рад пажљиво прочитали и разумели). Обим од 200 до 400 карактера.
+Rad govori o konceptima debagovanja u Haskelu i dostupnim alatima koji se, između ostalog, mogu upotrebiti u tu svrhu. Napravljen je i osvrt na tradicionalan način debagovanja, na njegov uticaj i razlike u pristupu debagovanju.
+
+\section{Krupne primedbe i sugestije}
+% Напишете своја запажања и конструктивне идеје шта у раду недостаје и шта би требало да се промени-измени-дода-одузме да би рад био квалитетнији.
+Izabrati formalniji naslov i dodati kontak email za svakog autora. 
+
+\section{Sitne primedbe}
+% Напишете своја запажања на тему штампарских-стилских-језичких грешки
+U sažetku piše "debagotati", "uopste", a ne "uopšte". Izostaviti predlog sa uz imenicu u instrumentalu koja oznacava oruđe. U poslednjoj recenici sažetka višak je jedno "je".
+U uvod ispraviti "nasem" u "našem", ili izostaviti to ponavljanje u prve dve rečenice. Odlučiti se da li će se govoriti o metodama u zenskom rodu ili metodima u muskom. Poslednja rečenica uvoda bi se mogla lepše formulisati. Pri kraju druge strane, ispraviti "dodajuci", a na početku treće "vec". U poslednjoj rečenici prvog pasusa, u 3.1 delu, višak "bismo" usporava čitanje duge rečenice.
+U 3.2, "programera" je višak,a u poslednjoj rečenici ispraviti "tackama". 
+U 4. delu ispraviti "se su se".
+Na 6. strani, ispod prvog potpisa funkcije, bolji početak rečenice koja govori o novim tipovima bi mogao da bude "Svaki novi..", a nastavak dalje prilagoditi. 
+Pravilno je struktuiran, a ne srukturiran (rečenica pre 5.1).
+6.1 ispraviti u "koliko elemenata u listi je veće".
+
+\section{Provera sadržajnosti i forme seminarskog rada}
+% Oдговорите на следећа питања --- уз сваки одговор дати и образложење
+
+\begin{enumerate}
+\item Da li rad dobro odgovara na zadatu temu?\\ Da, uzeti su u obzir svi zahtevi iz datog opisa teme. 
+\item Da li je nešto važno propušteno?\\ Autori su opravdali fokus njihovog rada koji je po njima najznačajniji za oblast kojom su se bavili.
+\item Da li ima suštinskih grešaka i propusta?\\ Nema, autori su se potrudili da ispoštuju sva pravila i savete.
+\item Da li je naslov rada dobro izabran?\\ Naslov rada sadrži frazu, pa bi se mogao promeniti.
+\item Da li sažetak sadrži prave podatke o radu?\\ Sadrži sve ključne reči kojima bi se inače pretraživao.
+\item Da li je rad lak-težak za čitanje?\\ Relativno je lak za čitanje jer su celine povezane i važne stvari istaknute.
+\item Da li je za razumevanje teksta potrebno predznanje i u kolikoj meri?\\ Potrebno je predznanje sintakse Haskela i nekih osnovnih termina vezanih za dokazivanje korektnosti programa.
+\item Da li je u radu navedena odgovarajuća literatura?\\ Jeste.
+\item Da li su u radu reference korektno navedene?\\ Jesu.
+\item Da li je struktura rada adekvatna?\\ Struktura je adekvatna.
+\item Da li rad sadrži sve elemente propisane uslovom seminarskog rada (slike, tabele, broj strana...)?\\ Svi elementi su prisutni na uredan i ispravan način.
+\item Da li su slike i tabele funkcionalne i adekvatne?\\ Jesu.
+\end{enumerate}
+
+\section{Ocenite sebe}
+% Napišite koliko ste upućeni u oblast koju recenzirate: 
+% a) ekspert u datoj oblasti
+% b) veoma upućeni u oblast
+% c) srednje upućeni
+% d) malo upućeni 
+% e) skoro neupućeni
+% f) potpuno neupućeni
+% Obrazložite svoju odluku
+
+Srednje sam upućena, slabo ranije iskustvo na datu temu sam nadoknadila propratnim istrživanjem uz čitanje ovog rada.
+
+\chapter{Recenzent \odgovor{--- ocena:} }
+
+
+\section{O čemu rad govori?}
+% Напишете један кратак пасус у којим ћете својим речима препричати суштину рада (и тиме показати да сте рад пажљиво прочитали и разумели). Обим од 200 до 400 карактера.
+Rad počinje uvodnom pričom o debagovanju programa generalno. Nakon toga se kratko osvrće na matematičku 
+pozadinu dokaza korektnosti programa pisanih u Haskelu(ili bilo kom drugom programskoj jeziku).
+U trećoj sekciji imamo priču o GHCi debageru opisanu kroz dva ključna pojma 
+\begin{itemize}
+ 	\item breakpoints
+ 	\item trace
+\end{itemize}
+U ostalim sekcijama je pažnja posvećena redom:
+\begin{itemize}
+	\item alatu HAT
+	\item debager hood
+	\item biblioteci debug i njenom podmodulu hoed
+\end{itemize}
+Alat HAT je zapravo "tracer" čiji rad se sastoji iz dva dela: ostavljanje traga i pregledanje traga.
+Trag biva zapisan u trajnu datoteku na disku čijim se sadržajem kasnije može "poslužiti" neki od
+jutiliti (eng. \emph{utility}) alata iz Heta.
+Dobra stvar je što je alat nezavisan od kompajlera i dosta ugodan za korišćenje programeru.
+Loša je zastarelost. 
+\\ 
+Sledeća je biblioteka hood, koja je podržana od strane većine kompajlera, zapravo nisam siguran da li je biblioteka ili debager
+kako su autori naveli. Gde su opisali elementarni način funkcionisanja postavljanjem \emph{Observer-a} na određene
+objekte. Za lakše razumevanje su dodati primeri, koji meni lično nisu ništa pomogli. Ali posvetiću više vremena tome kasnije.
+\\
+I na kraju imamo deo posvećen biblioteci Debug. Gde je u jednom pasusu objašnjena pozadina i kako se biblioteka
+integriše u Haskel program i na kraju demonstracija rada uz solidna objašnjenja i nekoliko fotografija samog procesa
+upotebe. Poslednja stvar je podmoul biblioteke pod nazivom Hoed koji premošćava neke nedostatke same biblioteke.
+\section{Krupne primedbe i sugestije}
+% Напишете своја запажања и конструктивне идеје шта у раду недостаје и шта би требало да се промени-измени-дода-одузме да би рад био квалитетнији.
+\begin{itemize}
+    \item Možda bi trebalo dodati u apstrakt kome je namenjen rad i koliko predznanje je neophodno.
+	\item Premalo prostora ostavljeno za GHCi koji je u samom nazivu teme. Mnogo više za sve ostale opcije.
+	Predlažem izbacivanje nekog od primera iz 5.sekcije, ako je prostor problem. 
+	Pritom, ne postoji nijedna referenca na literaturu gde bih moglo više da se pročita.
+	Preporučio bih autorima, detaljnu samoreviziju 3. sekcije, jer trenutno je jako nerazumljiva.
+	Ako za ostale alate postoji primer upotrebe onda bi trebalo dodati po koji primer i za GHCi, jer je u samom zahtevu teme
+	on posebno naglašen.
+	\item Sekcija 5. ima previše primera, a premalo objašnjenja. Referisanje na referentnu
+	literaturu postoji, gde se može detaljnije pročitati. Bolje bi bilo te primere ostaviti npr. za prezentaciju. Jer ovako 
+	bezbroj primera, osobi koja nije imala kontakt sa konkretnom bibliotekom ništa ne znači.
+	Preporučio bih dodavanje referentne lokacije na internetu sa vodičem za instalaciju ili samostalno napisanu kraću verziju.
+
+\end{itemize}
+
+\section{Sitne primedbe}
+% Напишете своја запажања на тему штампарских-стилских-језичких грешки
+\begin{itemize}
+	\item Možda dodati ključne reči u apstrakt, formalnosti radi
+	\item Prve tri sekcije obiluju slovima bez dijakritika i pojava dj umesto đ
+	\item Nedoslednost u transkribovanju termina Het (srpski) Debug(engleski).
+	\item Početak druge sekcije: Haskelu, a ne Haskel-u.
+	\item Na kraju 2.sekcije referisati na listing u tekstu
+	\item Sekcija 3: korak po korak, a ne korak-po-korak
+	\item 3.1. prvi pasus: poslednju rečenicu bi trebalo preformulisati, teška je za razumevanje.
+	\item 3.1 drugi pasus: predlaže se malo detaljnije objašnjenje pojma \emph{thunk}. U tekstu je samo
+	dato da se koriste pri lenjom izračunavanju.
+	\item 3.1 drugi pasus: predlaže se preformulacija tvrđenja ' svaki tip pre nego što može konvencionalno da se ispisuje
+	mora da ima implementiranu funkciju za ispisivanje' u: Da bi instancu određenog tipa bilo moguće konvencionalno
+	ispisati neophodno je da tip ima implementiranu funkciju \emph{show}.
+	\item 5.1 poslednja rečenica: Razmisliti o eliminisanju rečenice ili nekakvoj izmeni. Deluje kao da je dodato na brzinu, 
+	jer autori nisu bili sigurni kako da završe sekciju.
+	\item 6. : Nedoslednost u traskribovanju sa ostalim delom teksta, Haskell napisan izvorno umesto Haskel.
+	\item zaključak: 'Autori smatraju...' možda bi trebalo preformulisati nekako, jer ovo deluje kako iznošenje subjektivnog
+	uverenja.
+	\item  U celom tekstu postoje  greške u vidu progutanog slova ili pogrešnog reda reči u rečenici , trebalo bi da autori pročitaju ceo tekst.\\
+\end{itemize}
+
+\section{Provera sadržajnosti i forme seminarskog rada}
+% Oдговорите на следећа питања --- уз сваки одговор дати и образложење
+
+\begin{enumerate}
+\item Da li rad dobro odgovara na zadatu temu?\\
+Da, ono što je pisalo u opisu je zadovoljeno. Uz dodate alate.
+\item Da li je nešto važno propušteno?\\
+Malo više posvetiti pažnju GHCi.
+\item Da li ima suštinskih grešaka i propusta?\\
+Naveo sam pre.
+\item Da li je naslov rada dobro izabran?\\
+Možda je naslov teatralan za nivo akademskog seminarskog rada.
+Ovakav naslov bi možda prigodniji bio za neku vrstu bloga.
+\item Da li sažetak sadrži prave podatke o radu?\\
+Da, nema šta da se doda. Ono što piše u apstraktu to stoji i u radu samo obimnije.
+\item Da li je rad lak-težak za čitanje?\\
+I da i ne. Zavisi od poglavlja. 
+\item Da li je za razumevanje teksta potrebno predznanje i u kolikoj meri?\\
+Da, barem odslušan kurs Funkcionalnog programiranje.
+\item Da li je u radu navedena odgovarajuća literatura?\\
+Da, sa sigurnošću tvrdim za [3] i [7], ostalo deluje na prvi pogled.
+\item Da li su u radu reference korektno navedene?\\
+Da
+\item Da li je struktura rada adekvatna?\\
+Da, na strukturu nemam primedbu u smislu organizacije sekcija.
+\item Da li rad sadrži sve elemente propisane uslovom seminarskog rada (slike, tabele, broj strana...)?\\
+Slike postoje, nisu samostalno kreirane, ali ne bih tu zamerao puno, tema je malo nezgodna.
+Tabele, okej.
+Broj strana, 12.
+\item Da li su slike i tabele funkcionalne i adekvatne?\\
+Slike sa slikom ekrana gde se prikazuje GUI nakon poziva debugView u 6.sekciji su presitne i disfunkcionalne dok
+se ne zumiraju. 
+Tabela je dobra.
+Sve bi bilo estetski lepše da ne štrči izvan margina teksta.
+\end{enumerate}
+
+\section{Ocenite sebe}
+% Napišite koliko ste upućeni u oblast koju recenzirate: 
+% a) ekspert u datoj oblasti
+% b) veoma upućeni u oblast
+c) srednje upućeni, poznajem Haskel i funkcionalno programiranje, ali nisam nikad koristio nijedan Hs debager
+% d) malo upućeni 
+% e) skoro neupućeni
+% f) potpuno neupućeni
+% Obrazložite svoju odluku
+
+
+
+\chapter{Dodatne izmene}
+%Ovde navedite ukoliko ima izmena koje ste uradili a koje vam recenzenti nisu tražili. 
+
+\end{document}
