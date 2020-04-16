@@ -54,7 +54,7 @@
 
 \title{Debagovati u Haskelu ili ne, pitanje je sad\\ \small{Seminarski rad u okviru kursa\\Metodologija stručnog i naučnog rada\\ Matematički fakultet}}
 
-\author{Vladimir Batoćanin 074/2016 vladimir@wings.rs,\\Stefan Stefanović,\\Jovan Ležaja,\\Đorđe Jovanović}
+\author{Vladimir Batoćanin 074/2016 vladimir@wings.rs,\\Stefan Stefanović,\\Jovan Ležaja, 473/2018, jovanlezaja@hotmail.com,\\Đorđe Jovanović}
 
 %\date{9.~april 2015.}
 
@@ -118,9 +118,10 @@ U tradicionalnim nefunckionalnim jezicima se podrazumeva postojanje debagera, ko
 \section{Debagovanje korišćenjem Heta}
 Het (eng. {\em Hat -- {\bf \em Ha}skell {\bf \em t}racer}) je alat koji se koristi za generisanje {\em traga} (eng. {\em trace}) prilikom izvršavanja Haskel programa
 i nadziranje tako generisanog {\em traga} \cite{chitil2002transforming}. Smatra se jednim od najnaprednijih alata za debagovanje u Haskelu. Prednost alata Het u odnosu na ostale alate za debagovanje 
-se ogleda upravo u upotrebi {\em traga}, jer se programeru pruža pogled unutar ``crne kutije'', tj. sva izračunavanja u našem Haskel programu bivaju razmotana u niz redukcija koja programer može da analizira korišćenjem različitih interaktivnih alata, pri čemu svaki od njih na različite načine interpretira generisane tragove i omogućava široki spektar analiza izračunavanja Haskel programa.
+se ogleda upravo u upotrebi {\em traga}, jer se programeru pruža pogled unutar ``crne kutije'', tj. sva izračunavanja u našem Haskel programu bivaju razmotana u niz redukcija koje programer može da analizira korišćenjem različitih interaktivnih alata, pri čemu svaki od njih na različite načine interpretira generisane tragove i omogućava široki spektar analiza izračunavanja Haskel programa.
 Ovaj alat nije deo nekog prevodioca ili interpretatora za programski jezik Haskel,
-što se moglo smatrati prednošću u vremenu kada se su se koristili različiti prevodioci za Haskel programski jezik, pa samo njegovo postojanje i održavanje nije bilo tesno vezano za postojanje i održavanje nekog specifičnog prevodioca, odnosno interpretatora \cite{chitil2002transforming}. Međutim danas, u vremenu kada je {\em GHC} ({\em GHC -- Glasgow Haskell Compiler}) najpristupačniji Haskel prevodilac, ta osobina Heta ne mora da se nužno smatra prednošću, uzimajući u obzir da se sa konstantnim izlaskom novih verzija {\em GHC}-a javlja potreba za konstantnim održavanjem.
+% izmena u sledećoj rečenici: da se nužno smatra --> nužno da se smatra
+što se moglo smatrati prednošću u vremenu kada su se koristili različiti prevodioci za Haskel programski jezik, pa samo njegovo postojanje i održavanje nije bilo tesno vezano za postojanje i održavanje nekog specifičnog prevodioca, odnosno interpretatora \cite{chitil2002transforming}. Međutim danas, u vremenu kada je {\em GHC} ({\em GHC -- Glasgow Haskell Compiler}) najpristupačniji Haskel prevodilac, ta osobina Heta ne mora nužno da se smatra prednošću, uzimajući u obzir da se sa konstantnim izlaskom novih verzija {\em GHC}-a javlja potreba za konstantnim održavanjem.
 U ovom radu naglasak će biti na korišćenju alata Het kao debagera, no on može da se koristi i u svrhe posmatranja kako funkcioniše korektno napisan Haskel program \cite{wallace2001multiple}.
 Nažalost, usled zastarelosti biblioteka koje koristi alat Het, autori rada nisu uspeli da osposobe alat na svojim mašinama nakon više pokušaja. 
 %TODO: ovde bi trebalo dodati rečenicu koja naglašava da debagovanje u Haskelu samim tim nije bas ``najudobnije'', makar sto se tice Heta 
@@ -136,7 +137,11 @@ potrebno ga je prvo transformisati korišćenjem alata koji se sadrži u Hetu po
 Haskel program koji se prevodi i povezuje (eng. {\em linking}) sa odgovarajućim bibliotekama koje pruža Het \cite{chitil2002transforming}. Tako transformisan program se prevodi i pokreće,
 pri čemu transformisan program radi isto što i originalni program, uz dodatak da ispisuje {\em trag} u određenu datoteku. % Primećujemo nekoliko razlika u odnosu na ostale debagere.
 Jedna od razlika koja se javlja kod Heta u odnosu na neke druge debagere je ta da je uloga transformisanja izvornog koda prepuštena računaru, tj. da je programer oslobođen od dodavanja novog koda u cilju debagovanja, kao što to imamo kod Hud (eng. {\em Hood}) debagera ubacivanjem {\em observe} ključne reči.
-Ta osobina alata Het se može smatrati vrlinom, uzimajući u obzir da je cilj debagovanja da bude što ``bezbolniji'', kako po originalni izvorni kod (u smislu da ne želimo da vršimo velike izmene u kodu), tako i po programera, jer menjanje koda ručno donosi još jedan mogući faktor greške. 
+% izmenjena rečenica
+Ta osobina alata Het se može smatrati vrlinom, obzirom da je cilj debagovanja da bude što ``bezbolniji'', kako po originalni izvorni kod, 
+tako i po programera. Naime, kada je u pitanju menjanje izvornog koda u cilju debagovanja, težnja programera je da napravi što manje izmena u samom 
+izvornom kodu, a pritom se uvodi još jedan faktor greške ukoliko se taj kod menja ručno.
+% kraj izmene
 Takođe, prilikom pokretanja tako transformisanog programa, datoteku sa tragom je moguće koristiti neograničen broj puta, s obzirom da je ta datoteka sačuvana u sekundarnoj memoriji ne bi li više alata iz Heta moglo da se koristi datotekom u jednom pokretanju programa.
 Po pitanju zauzetosti memorije ova osobina nije baš poželjna jer, u slučaju debagovanja kompleksnijih programa, datoteka koja sadrži trag izvršavanja programa može da bude velika u smislu memorije.
 Nakon ove faze se prelazi u fazu {\em pregledanja traga}.
@@ -151,6 +156,7 @@ Veliki broj alata koji nude različite poglede na program koji se debaguje je je
 Nažalost, nekompatibilnost alata Het sa novijim verzijama Haskel biblioteka i {\em GHC}-om ({\em GHC} - {\em Glasgow Haskell Compiler}) ga čini nepristupačnim programerima 
 koji žele da posvete što manje vremena na iscrpna podešavanja verzija raznoraznih biblioteka, a što više na debagovanje.
 
+% izmena rasporeda teksta u tabeli, kako bi bilo simetrično
 \begin{table}[h!]
 \begin{center}
 \caption{Opis nekih od alata koje nudi Het}
@@ -169,10 +175,10 @@ Naziv alata & Opis\\ \hline
 {\em hat-stack} & { Ovaj alat za neuspešna izvršavanja programa nagoveštava } \\ & 
 		  { u kojoj funkciji je došlo do prekida izvršavanja, } \\ & 
 		  { i to tako što ispiše {\em virtuelni stek}\footnotemark[1] funkcijskih poziva \cite{hat_haskell_org}. }\\ \hline % TODO: treba objasniti zašto je virtuelni stek
-{\em hat-explore} & { Slično kao i kod uobičajenih debagera, ovaj alat }\\ &
-		    { označava trenutnu poziciju u izvornom kodu u kojoj } \\ &
-		    { se nalazi prilikom izračunavanja programa, ujedno} \\ &
-		    { prikazujući i redosled pozivanja funkcija u toku izračunavanja \cite{hat_haskell_org}.} \\ \hline
+{\em hat-explore} & { Slično kao i kod uobičajenih debagera, ovaj alat označava }\\ &
+		    { trenutnu poziciju u izvornom kodu u kojoj se nalazi } \\ &
+		    { prilikom izračunavanja programa, ujedno prikazujući } \\ &
+		    { i redosled pozivanja funkcija u toku izračunavanja \cite{hat_haskell_org}.} \\ \hline
 \end{tabular}
 \label{tab:tabela_hat}
 \end{center}
