@@ -142,6 +142,16 @@ U fazi {\em ostavljanja traga} se pokreće program koji treba da se debaguje tak
 potrebno ga je prvo transformisati korišćenjem alata koji se sadrži u Hetu pod nazivom {\em hat-trans}. U tom procesu se naš Haskel program transformiše u
 Haskel program koji se prevodi i povezuje (eng. {\em linking}) sa odgovarajućim bibliotekama koje pruža Het \cite{chitil2002transforming}. Tako transformisan program se prevodi i pokreće,
 pri čemu transformisan program radi isto što i originalni program, uz dodatak da ispisuje {\em trag} u određenu datoteku. % Primećujemo nekoliko razlika u odnosu na ostale debagere.
+Grafički prikaz korišćenja alata {\em hat-trans} prikazan je na slici \ref{fig:hat-trans}.
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.55]{hat-trans_graf.png}
+\end{center}
+\caption{Ostavljanje traga u Hetu}
+\label{fig:hat-trans}
+\end{figure}
+
 Jedna od razlika koja se javlja kod Heta u odnosu na neke druge debagere je ta da je uloga transformisanja izvornog koda prepuštena računaru, tj. da je programer oslobođen od dodavanja novog koda u cilju debagovanja, kao što to imamo kod Hud (eng. {\em Hood}) debagera ubacivanjem {\em observe} ključne reči.
 % izmenjena rečenica
 Ta osobina alata Het se može smatrati vrlinom, obzirom da je cilj debagovanja da bude što ``bezbolniji'', kako po originalni izvorni kod, 
@@ -389,10 +399,10 @@ Funkcija {\em map} je od svakog elementa niza uzela poslednju cifru i napravila 
 U ovom primeru vidimo koliko je hud moćan alat i sa kojom se lakoćom koristi.
 
 \section{Debagovanje korišćenjem Debug biblioteke}
-Debug biblioteka je kreirana or strane Nila Mičela(eng. {\em Neil Mitchell}) zarad laganog debagovanja Haskell programa. Fokus ove biblioteke jeste na jednostavnosti korišćenja i intuitivnom interfejsu. Pošto je u pitanju Haskell biblioteka, ona ne zavisi od eksternih alata, što znatno olakšava njeno korišćenje i održavanje. Debug pri korišćenju generiše trag (eng. {\em trace}) i omogućava jasno praćenje generisanog traga kroz svako pozivanje funkcije \cite{chitil2002transforming}.
-Mitchellov Debug se može integrisati u Haskel program na više načina, najčešće putem enkapsuliranja programskog koda u okviru debug funkcije. 
+Debug biblioteka je kreirana or strane Nila Mičela(eng. {\em Neil Mitchell}) zarad laganog debagovanja Haskel programa\cite{mitchell-debug}. Fokus ove biblioteke jeste na jednostavnosti korišćenja i intuitivnom interfejsu. Pošto je u pitanju Haskel biblioteka, ona ne zavisi od eksternih alata, što znatno olakšava njeno korišćenje i održavanje. Debug pri korišćenju generiše trag (eng. {\em trace}) i omogućava jasno praćenje generisanog traga kroz svako pozivanje funkcije\cite{chitil2002transforming}.
+Mičelov Debug se može integrisati u Haskel program na više načina, najčešće putem enkapsuliranja programskog koda u okviru debug funkcije\cite{mitchell-debug}.
 
-Program koji ćemo koristiti za demonstraciju debug biblioteke se sastoji od 3 funkcije, sve tri treba da od niza elemenata koji se mogu porediti izvuku broj elemenata veći od početnog.
+Program koji ćemo koristiti za demonstraciju Debug biblioteke se sastoji od 3 funkcije, sve tri treba da vrate koliko elemenata u nizu je veće od početnog.
 
 \begin{lstlisting}[caption={Okružujemo naš kod funkcijom debug, iz biblioteke Debug, sa uključivanjem ekstenzija navedenih u prvom redu}, language=Haskell]
 {-# LANGUAGE TemplateHaskell, ViewPatterns, PartialTypeSignatures #-}
@@ -424,7 +434,7 @@ debug [d|
 \end{lstlisting}
 
 \subsection{Primena debug-a}
-U ovom odeljku će biti demonstriran tipičan primer korišćenja debug biblioteke, korišćenjem primera navedenog gore. Sve tri funkcije bi trebalo da nam daju koliko elemenata u listi su veći od prvog elementa liste.
+U ovom odeljku će biti demonstriran tipičan primer korišćenja debug biblioteke, korišćenjem primera navedenog gore.
 
 \begin{figure}[h!]
 \begin{center}
@@ -433,7 +443,7 @@ U ovom odeljku će biti demonstriran tipičan primer korišćenja debug bibliote
 \end{center}
 \end{figure}
 
-Nakon što pozovemo bilo koju funkciju i ona se izvrši, ona zahvaljujući debug funkciji ostavlja trag- Komandom debugView pozivamo browser prozor koji nam prikazuje željene informacije. Druga opcija je da sa debugRun automatski izvršimo funkciju i pozovemo prozor.
+Nakon što pozovemo bilo koju funkciju i ona se izvrši, ona zahvaljujući debug funkciji ostavlja trag. Komandom debugView pozivamo brauzer(browser) prozor koji nam prikazuje željene informacije. Druga opcija je da sa debugRun automatski izvršimo funkciju i pozovemo prozor\cite{mitchell-debug}.
 
 \begin{figure}[h!]
 \begin{center}
@@ -443,8 +453,7 @@ Nakon što pozovemo bilo koju funkciju i ona se izvrši, ona zahvaljujući debug
 \end{figure}
 
 Za svaku od levo navedenih funkcija koje predstavljaju call stack ovog programa možemo jasno videti argumente i rezultat, što nam omogućava pregledno debagovanje bilo kog Haskell programa.
-Primetićemo da prvi primer radi kako treba, tj vraća 8 elementa veća od prvog. Probajmo sad ostale primere.
-
+Primetićemo da prvi primer radi kako treba, tj vraća 8 elemenata većih od prvog.
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[scale=0.3]{mitchell-browser-pregled'.png}
@@ -452,7 +461,7 @@ Primetićemo da prvi primer radi kako treba, tj vraća 8 elementa veća od prvog
 \end{center}
 \end{figure}
 
-Ovaj primer vraća rezultat 3. Na nama je da vidimo u čemu je problem. U levoj strani možemo videti sve funkcije koje su pozvane, što nam služi kao call stack programa. Prvi red predstavlja prvu pozvanu funkciju. Drugi red nam je sledeći poziv. Primetimo da je neobičan. Naš plan s ovom funkcijom je da nađemo broj elemenata veći od prvog, a izgleda da smo ga odbacili pri drugom pozivu.
+Drugi primer vraća rezultat 3. Na nama je da vidimo u čemu je problem. U levoj strani možemo videti sve funkcije koje su pozvane, što nam služi kao Call Stack programa. Prvi red predstavlja prvu pozvanu funkciju. Drugi red nam je sledeći poziv. Primetimo da je neobičan. Naš plan s ovom funkcijom je da nađemo broj elemenata veći od prvog, a izgleda da smo ga odbacili pri drugom pozivu.
 Gore imamo programski kod funkcije i možemo pogledati šta je urađeno.
 Kad je drugi element veći od prvog, mi rekurzivno pozivamo funkciju sa listom bez prvog elementa, i tako kroz ostale. Našli smo bug!
 
@@ -463,22 +472,17 @@ Kad je drugi element veći od prvog, mi rekurzivno pozivamo funkciju sa listom b
 \end{center}
 \end{figure}
 
-Dobijamo krajnji rezultat 10. Primetimo u drugom pozivu, gledajući call stack, da on vraća +1 za niz koji počinje sa 3,3. Gledajući kod funkcije primetimo da vraća +1 kada su jednaki brojevi. Bug je pronađen!
+U trećem primeru dobijamo krajnji rezultat 10. Primetimo u drugom pozivu, gledajući call stack, da on vraća +1 za niz koji počinje sa 3,3. Gledajući kod funkcije primetimo da vraća +1 kada su jednaki brojevi. Bug je pronađen!
 
 Ovo je u suštini kako se radi sa Debug-om. Jednostavan prozor gde se vidi manje-više sve što treba.
-
-\subsection{Problemi debug-a}
+\subsection{Problemi debug-a i Debug.Hoed}
 
 Debug nije bez svojih problema. 
-On koristi Show instance da bi prikazao vrednosti, što pravi probleme ako se program oslanja na lenjo izračunavanje, na primer kad imamo beskonačni niz. U tom slučaju program če najčešće da crash-uje ili se zaglavi u beskonačnoj petlji.
+On koristi Show instance da bi prikazao vrednosti, što pravi probleme ako se program oslanja na lenjo izračunavanje, na primer kad imamo beskonačni niz. U tom slučaju program će najčešće da crash-uje ili se zaglavi u beskonačnoj petlji\cite{mitchell-debug}.
 
-\subsection{Debug.Hoed}
+Debug.Hoed rešava gorenavedene probleme. U pitanju je biblioteka građena na Debug koja takođe koristi TemplateHaskell, koja podržava lenjo izračunavanje i nudi jasan prikaz Call Stack-a. Primer kako izgleda prozor s njim se može pronaći u literaturi. Važno je napomenuti da je u eksperimentalnoj fazi, tj. mogu se očekivati drugi bagovi pri korišćenju.
 
-Biblioteka građena na Debug i koja koristi TemplateHaskell, koja podržava lenjo izračunavanje i nudi jasan prikaz Call Stack-a. Primer kako izgleda prozor s njim se može pronaći u literaturi.
-
-Za razliku od Debug, Debug.Hoed nema gorenavedenih problema. Važno je napomenuti da je Debug u eksperimentalnoj fazi, tako da će korisnici njega potencijalno imati drugih problema pri korišćenju.
-
-Nažalost, nismo u mogućnosti da prikažemo praktičan primer sa Debug.Hoed usled problema sa zastarelom verzijom ghci koja se dobija preko apt repozitorijuma(8.0 umesto 8.2+)
+Nažalost, nismo u mogućnosti da prikažemo praktičan primer sa Debug.Hoed usled problema sa zastarelom verzijom ghci koja se dobija preko apt repozitorijuma(8.0 umesto 8.2+, koji Debug.Hoed zahteva)
 
 \section{Zaključak}
 \label{sec:zakljucak}
