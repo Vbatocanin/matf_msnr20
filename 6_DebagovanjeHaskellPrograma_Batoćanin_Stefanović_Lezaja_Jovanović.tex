@@ -54,7 +54,7 @@
 
 \title{Debagovati u Haskelu ili ne, pitanje je sad\\ \small{Seminarski rad u okviru kursa\\Metodologija stručnog i naučnog rada\\ Matematički fakultet}}
 
-\author{Vladimir Batoćanin 074/2016 vladimir@wings.rs,\\Stefan Stefanović, 26/2016, stefaniussuperbus@gmail.com\\Jovan Ležaja, 473/2018, jovanlezaja@hotmail.com,\\Đorđe Jovanović}
+\author{Vladimir Batoćanin 074/2016 vladimir@wings.rs,\\Stefan Stefanović, 26/2016, stefaniussuperbus@gmail.com\\Jovan Ležaja, 473/2018, jovanlezaja@hotmail.com,\\Đorđe Jovanović, 405/2015, jovanovic.dj.92@gmail.com}
 
 %\date{9.~april 2015.}
 
@@ -227,9 +227,10 @@ Naziv alata & Opis\\ \hline
 \footnotetext[1]{Stek je {\em virtuelni} zato što je u stvarnom steku izračunavanja Haskel programa omogućeno {\em lenjo izračunavanje}, dok se kod virtuelnog steka prikazuje kakav bi bio stek u slučaju strogog izračunavanja.} 
 
 \section{HOOD Debager}
-Hud (eng. {\em HOOD -- Haskell Object Observation Debugger}) je mali debager za Haskel, baziran na posmatranju struktura podataka dok se prosleđuju između funkcija.\cite{hood}
+Hud (eng. {\em HOOD -- Haskell Object Observation Debugger}) je mali debager za Haskel, baziran na posmatranju struktura podataka dok se prosleđuju između funkcija \cite{hood}.
 Implementiran je kao nezavisna biblioteka koju je moguće koristiti iz bilo kog Haskel kompajlera, što ga izdvaja u odnosu na ostale debagere.
-Korišćenje huda je relativno prosto. Prvo se vrši umetanje funkcije {\em observe} ispred objekta koji se posmatra ili između dve funkcije čije međustanje želimo da posmatramo.
+
+Korišćenje Huda je relativno prosto. Prvo se vrši umetanje funkcije {\em observe} ispred objekta koji se posmatra ili između dve funkcije čije međustanje želimo da posmatramo.
 Nakon toga program se izvršava, a zatim se vrši ispis stanja objekata koji su posmatrani.
 Tip ove funkcije je:\newline \newline
 
@@ -239,19 +240,18 @@ observe :: (Observable a) => String -> a -> a
 
 gde je prvi argument labela kojom obeležavamo ispis, a drugi je objekat koji se posmatra.
 Kao što se vidi u potpisu funkcije, postoji tipsko ograničenje tj. posmatrani objekat mora da bude klase {\em Observable}, što je već implementirano za osnovne tipove.
-Za svaki novi tip koji se napravi nepohodno je da  pridruži ovoj klasi, ako želimo da ga posmatramo.
+Svaki novi tip koji se napravi mora biti pridružen ovoj klasi, ako želimo da ga posmatramo.
+
 Što se tiče Haskela, {\em observe} se ponaša kao funkcija identiteta s tim što čuva podatke za kasnije čitanje.
 U jednom programu je moguće imati više poziva funkcije observe, koje razlikujemo korišćenjem labela.
 Takođe je moguće posmatrati bilo koji izraz, a ne samo međustanja funkcijskih poziva.
-Pozivi funkcije {\em observe} ne zahtevaju dodatna izračunavanja posmatranog objekta što ide u prilog efikasnosti ovog alata.\cite{declarative}
-Glavna prednost huda je to što uz minimalne promene k\^{o}da dobijamo strukturiran prikaz objekata.
+Pozivi funkcije {\em observe} ne zahtevaju dodatna izračunavanja posmatranog objekta što ide u prilog efikasnosti ovog alata \cite{declarative}.
+Glavna prednost Huda je to što uz minimalne promene k\^{o}da dobijamo struktuiran prikaz objekata.
 
-\subsection{Primeri korišćenja funkcije observe}
-\begin{primer}
- Posmatranje konačne liste:
-\end{primer}
-Ovde je eksplicitno naveden tip podatka koji se posmatra, ali to nije neophodno.
-\begin{lstlisting}[language=Haskell]
+\subsection{Posmatranje liste}
+Razmotrićemo par prostih primera korišćenja funkcije {\em observe}.
+U prvom primeru je eksplicitno naveden tip podatka koji se posmatra, ali to nije neophodno, pa se može izostaviti.
+\begin{lstlisting}[caption={Posmatranje konačne liste}, language=Haskell]
 pr1 :: IO ()
 pr1 = print ((observe "lista" :: Observing [Int])[0..9])
 -- lista
@@ -259,68 +259,35 @@ pr1 = print ((observe "lista" :: Observing [Int])[0..9])
 \end{lstlisting}
 
 Podjednako je validan i sledeći izraz: 
-\begin{lstlisting}[language=Haskell]
+\begin{lstlisting}[caption = {Posmatranje konačne liste bez anotacije za tip}, language=Haskell]
 pr1 = print (observe "lista" [0..9])
 \end{lstlisting}
 
-\begin{primer} 
-Posmatranje međustanja
-\end{primer}
+U ovom primeru vidimo da je moguće posmatranje beskonačne liste.
+Primećujemo da su brojevi od 0 do 5 izračunati i prikazani, a ostatak koji nije izračunat je prikazan sa
+karakterom \_.
 
-\begin{lstlisting}[language=Haskell]
+\begin{lstlisting}[caption={Posmatranje beskonačne liste}, language=Haskell]
 pr2 :: IO()
-pr2 = print . reverse . observe "medjustanje" . reverse $ [0..9]
--- medjustanje
-9 : 8 : 7 : 6 : 5 : 4 : 3 : 2 : 1 : []
-\end{lstlisting}
-
-Ovde vidimo da observe podržava parcijalnu aplikaciju, što je standardni način zapisivanja kada posmatramo
-međustanja.\cite{hood}
-
-\begin{primer} 
-Beskonačne liste
-\end{primer}
-\begin{lstlisting}[language=Haskell]
-pr3 :: IO()
-pr3 = print (take 6 (observe "beskonacna lista" [0..]))
+pr2 = print (take 6 (observe "beskonacna lista" [0..]))
 -- beskonacna lista
 0 : 1 : 2 : 3 : 4 : 5 : _
 \end{lstlisting}
 
-Primećujemo da su brojevi od 0 do 5 izračunati i prikazani, a ostatak koji nije izračunat je prikazan sa
-karakterom \_.
 
-\begin{primer} 
- Liste sa neizračunatim elementima
-\end{primer}
-\begin{lstlisting}[language=Haskell]
-pr4 :: IO()
-pr4 = print (length (observe "konacna lista" [1..6]))
--- konacna lista
-_ : _ : _ : _ : _ : _ : []
+
+\subsection{Posmatranje međustanja}
+{\em Observe} podržava parcijalnu aplikaciju, što je standardni način zapisivanja kada posmatramo međustanja \cite{hood}.
+\begin{lstlisting}[caption={Posmatranje međustanja}, language=Haskell]
+pr3 :: IO()
+pr3 = print . reverse . observe "medjustanje" . reverse $ [0..9]
+-- medjustanje
+9 : 8 : 7 : 6 : 5 : 4 : 3 : 2 : 1 : []
 \end{lstlisting}
 
-Pošto je Haskell lenj jezik, elementi nisu izračunati, pa samim tim ni observe ne može da ih vidi.
-
-\begin{primer} 
-Liste sa polovično izračunatim elementima
-\end{primer}
-\begin{lstlisting}[language=Haskell]
-pr5 :: IO ()
-pr5 = let xs = observe "polovicna lista" [0..9]
-	in print(xs !! 1 + xs !! 5)
--- polovicna lista
-_ : 1 : _ : _ : _ : 5 : _
-\end{lstlisting}
-
-Primećujemo da observe vidi samo one elemente koji su izračunati.
-
-\begin{primer} 
-Korišćenje više funkcija observe
-\end{primer}
-U ovom primeru vidimo kako možemo da ispratimo sva međustanja izvršavanja jedne funkcije, što znatno olakšava uočavanje mesta greške.
+U narednom primeru vidimo kako možemo da ispratimo sva međustanja izvršavanja jedne funkcije, što znatno olakšava uočavanje mesta greške.
 Funkcija vraća niz cifara datog broja.
-\begin{lstlisting}[language=Haskell]
+\begin{lstlisting}[caption={Korišćenje više funkcija observe}, language=Haskell]
 cifre :: Int -> [Int]
 cifre = observe "posle reverse" 
 		. reverse
@@ -341,14 +308,13 @@ cifre 3542
 (3 : 5 : 4 : 2 : [])
 \end{lstlisting}
 
+\subsection{Posmatranje funkcija}
 
-\begin{primer}
-Posmatranje funkcija
-\end{primer}
-Pored posmatranja osnovnih tipova podataka, moguće je i posmatranje funkcija tj. posmatranje mapiranja argumenata u rezultate.\cite{hood}
-Argumenti i rezultati mogu sadržati neizračunate elemente, kao u prethodnim primerima.
-\begin{lstlisting}[language=Haskell]
-pr6 = print ((observe "length" :: Observing([Int] -> Int)) 
+Pored posmatranja osnovnih tipova podataka, moguće je i posmatranje funkcija tj. posmatranje mapiranja argumenata u rezultate \cite{hood}.
+Hud podržava posmatranje funkcija sa više argumenata, kao i funkcija višeg reda.
+U narednom primeru primećujemo da elementi liste nisu izračunati, pa ih ni {\em observe} ne vidi.
+\begin{lstlisting}[caption = {Posmatranje funkcije length}, language=Haskell]
+pr4 = print ((observe "length" :: Observing([Int] -> Int)) 
 	length [1..3])
 -- length
 { \ (_ : _ : _ : [] -> 3
@@ -356,7 +322,7 @@ pr6 = print ((observe "length" :: Observing([Int] -> Int))
 \end{lstlisting}
 Funkcija {\em observe} sada prima tri argumenta: labelu, funkciju(length) i njen argument. 
 Ovako Haskel program tumači ovaj izraz:
-\begin{lstlisting}[language=Haskell]
+\begin{lstlisting}[caption = {Izračunavanje izraza korak po korak}, language=Haskell]
 (observe "length" :: Observing ([Int] -> Int)) length [1..3]
 -- uklanja se anotacija tipa posmatrane funkcije
 observe "length" length [1..3]
@@ -368,25 +334,8 @@ id length [1..3]
 length [1..3]
 \end{lstlisting}
 
-Ovakvo tumačenje podržava i funkcije sa više argumenata kao i funkcije višeg reda.
-
-\begin{lstlisting}[language=Haskell]
-pr7 = print (observe "foldl (+) 0 [1..4]" foldl (+) 0 [1..4])
--- foldl (+) 0 [1..4]
-{ \ { \ 6 4 -> 10
-    , \ 3 3 -> 6
-    , \ 1 2 -> 3
-    , \ 0 1 -> 1
-    }
-    0
-    (1 : 2 : 3 : 4 : [])
-    -> 10
-} 
-\end{lstlisting}
-Posmatrajući {\em foldl}, posmatrali smo i njene argumente i dobili detaljan prikaz izvršavanja.
-
 Sada ćemo razmotriti prethodni primer sa ciframa, samo što ćemo ovog puta posmatrati funkcije umesto međustanja.
-\begin{lstlisting}[language=Haskell]
+\begin{lstlisting}[caption = {Posmatranje više funkcija}, language=Haskell]
 cifre :: Int -> [Int]
 cifre = reverse 
 	. observe "map" map (`mod` 10)
@@ -420,7 +369,7 @@ cifre = reverse
 Funkcija {\em iterate} je uzela broj 3542 i napravila beskonačni opadajući niz brojeva od kojih je samo prvih pet izračunato.
 Funkcija {\em takeWhile} je od beskonačnog niza napravila konačni kada je naišla na element 0.
 Funkcija {\em map} je od svakog elementa niza uzela poslednju cifru i napravila novi niz koji funkcija {\em reverse} obrće.
-U ovom primeru vidimo koliko je hud moćan alat i sa kojom se lakoćom koristi.
+Detaljnija objašnjenja primera mogu se naći u literaturi \cite{hood}.
 
 \section{Debagovanje korišćenjem Debug biblioteke}
 Debug biblioteka je kreirana or strane Nila Mičela(eng. {\em Neil Mitchell}) zarad laganog debagovanja Haskel programa\cite{mitchell-debug}. Fokus ove biblioteke jeste na jednostavnosti korišćenja i intuitivnom interfejsu. Pošto je u pitanju Haskel biblioteka, ona ne zavisi od eksternih alata, što znatno olakšava njeno korišćenje i održavanje. Debug pri korišćenju generiše trag (eng. {\em trace}) i omogućava jasno praćenje generisanog traga kroz svako pozivanje funkcije\cite{chitil2002transforming}.
