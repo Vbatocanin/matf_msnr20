@@ -73,23 +73,29 @@ Ovaj seminarski rad obrađuje temu debagovanja u Haškel-u, odnosno da li je u d
 
 
 {
-\emph{Softverski bag} se može definisati kao bilo koje nepredvideno ponašanje programa. Popravljanje programa u kome su prisutni bagovi se sastoji iz sistematičnog proveravanja željenog ponašanja programa, tj. da li dobijamo očekivani izlaz za dati ulaz. Poenta ovog procesa jeste da nađemo scenario u kome program ne daje poželjnu povratnu informaciju. Ovom postupku najčešće sledi lociranje uzroka problema, ali je isto tako moguće da samim ispitivanjem postojanja baga implicitno dobijemo dovoljno informacija o njegovoj lokaciji. Ovaj proces se naziva debagovanje. \textbf{debagovanje}\cite{stallman2002debugging}.\\
+\emph{Softverski bag} se može definisati kao bilo koje nepredviđeno ponašanje programa. Popravljanje programa u kome su prisutni bagovi se sastoji iz sistematičnog proveravanja ponašanja programa, tj. da li dobijamo očekivani izlaz za dati ulaz. Svrha ovog procesa jeste otkrivanje scenarija u kome program ne daje ispravnu povratnu informaciju. Nakon ovog postupka najčešće sledi lociranje uzroka problema, ali je isto tako moguće da samim ispitivanjem postojanja baga implicitno dobijemo dovoljno informacija o njegovoj lokaciji. Ovaj proces se naziva \textbf{debagovanje}\cite{stallman2002debugging}.\\
 
-Pošto ovaj proces najčešće nije toliko jednostavan, oformili su se razni principi, metodologije i alati za debagovanje. Međutim oni su se razvijali primarno za imperativne jezike, što znači da većina njih nije efektna na Haskelu, koji je čist funkcionalni jezik. Jedna od najbitnijih karakteristika programskog jezika Haskel je sam dizajn jezika, koji podstiče pisanje bezbednog i robusnog koda. Ovome najviše doprinosi stroga dinamička tipiziranost, što znači da interpretator javlja grešku istog momenta kada ne može sa sigurnošću da odredi tipove tj. potpise svih funkcija. Jos jedna vrlo bitna karakteristika za spomenuti je da Haskel podržava funkcije višeg reda kao i lenjo tj. nepotpuno izračunavanje. Ova karateristika drastično smanjuje efektnost tradicionalnih debagera pri korišćenju u tandemu sa Haskelom\cite{pope2006declarative}.\\
+Pošto ovaj proces najčešće nije jednostavan, oformljeni su razni principi, metodologije i alati za debagovanje. Međutim, oni su se razvijali primarno za imperativne jezike, što znači da većina njih nije efikasna sa Haskelom, koji je čist funkcionalni jezik. Jedna od najbitnijih karakteristika programskog jezika Haskel je sam dizajn jezika, koji podstiče pisanje bezbednog i robusnog koda. Ovome najviše doprinosi stroga dinamička tipiziranost, što znači da interpretator javlja grešku istog momenta kada ne može sa sigurnošću da odredi tipove tj. potpise svih funkcija. Jos jedna vrlo bitna karakteristika Haskela je da podržava funkcije višeg reda kao i lenjo tj. nepotpuno izračunavanje. Ova karakteristika drastično smanjuje efikasnost tradicionalnih debagera\cite{pope2006declarative}.\\
 
-Da bismo razumeli proces debagovanja Haskel programa, moramo se prvo osvrnuti na originalne osnovne principe debagovanja. Jedno od prvih i najzastupljenijih mišljenja o debagovanju je da programski kod treba dokazati kao svaki matematički dokaz, samim tim, u teoriji, eliminišući potrebu za debagovanjem. Ovaj princip je iz mnogo razloga bio nepogodan jer su se programski jezici razvijali u smeru koji ih je činio sve teže dokazivim\cite{pope2006declarative}. \\
+Da bismo razumeli proces debagovanja Haskel programa, moramo se prvo osvrnuti na originalne osnovne principe debagovanja. Jedno od prvih i najzastupljenijih mišljenja o debagovanju je da programski kod treba dokazati kao svaki matematički iskaz, čime se eliminiše potreba za debagovanjem. Ovaj princip je iz mnogo razloga bio nepogodan jer su se programski jezici razvijali u smeru koji je njihov k\^{o}d činio sve teže dokazivim\cite{pope2006declarative}. \\
 
-Izuzetak ovom razvitku je strukturalni stil programiranja, koji propagira da se programi pišu u vrlo jednostavnim nezavisnim celinama. Ovaj princip je implementiran u mnogim programskim jezicima kroz procedure, funckije i predikate. Za razliku od ostalih programskih jezika, Haskel u svojoj srži ima strukturni stil programiranja, time ohrabrujući njegovo matematičko dokazivanje\cite{pope2006declarative}.
+Izuzetak je strukturalni stil programiranja, koji propagira da se programi pišu u vrlo jednostavnim nezavisnim celinama. Ovaj princip je implementiran u mnogim programskim jezicima kroz procedure, funkcije i predikate. Za razliku od ostalih programskih jezika, Haskel u svojoj srži ima strukturni stil programiranja, čime se ohrabruje matematičko dokazivanje njegovog koda\cite{pope2006declarative}.
 
 \section{Matematičko dokazivanje}
 
-Za Haskel se veoma lako nalazi analogon na formalno matematičkom jeziku, zbog toga što strukturni dizajn implementira do na strukture podataka. Pošto su one vrlo temeljno definisane, moguće je indukcijom uopštiti program od baznog slučaja ka mnogo kompleksnijim. Ovo nam dozvoljava da već u fazi inicijalnog pisanja k\^{o}da dokažemo da je naš program matematički korektan. U ovom kontekstu se najčešće koristi metod {\em struktruralne indukcije}  (eng.~{\em structural induction}). Ovo je moguće isključivio zbog rekurzivno definisanih struktura podataka u Haskelu, pri čemu se koristi operator | (ili) koji označava matematičku uniju.\cite{craftOfFuncProg}
+Za Haskel se veoma lako nalazi analogon na formalno matematičkom jeziku, zbog toga što strukturni dizajn implementira do na strukture podataka. Pošto su one vrlo temeljno definisane, moguće je indukcijom uopštiti program od baznog slučaja ka mnogo kompleksnijim. Ovo nam dozvoljava da već u fazi inicijalnog pisanja k\^{o}da dokažemo da je naš program matematički korektan. U ovom kontekstu se najčešće koristi metod {\em struktruralne indukcije}  (eng.~{\em structural induction}). Ovo je moguće isključivo zbog rekurzivno definisanih struktura podataka u Haskelu, pri čemu se koristi operator | (ili) koji u prevodu na formalni matematički jezik predstavlja uniju skupova\cite{craftOfFuncProg}
 \newpage
-\begin{lstlisting}[language=Haskell,caption={Rekurzivno definisanje liste u Haskelu},frame=single, label=simple]
+\begin{primer}
+Rekurzivno definisanje liste u Haskelu:
+\end{primer}
+\begin{lstlisting}[language=Haskell,frame=single, label=simple]
 data Lista x = PraznaLista | Cons a (Lista x)
 \end{lstlisting}
-Znajući ovo, vrlo lako možemo dokazati korektnost programa koji koriste liste uz pomoć matematičke indukcije, gde bi nam baza indukcije bila slučaj prazne liste, a induktivni korak rekurzivni poziv liste čijom dekonstrukcijom dobijamo izolovani element, kao i listu za koju smo pretpostavili da važi induktivna hipoteza, kao na primer:
-\begin{lstlisting}[caption={Primer rekurzivno definisane funkcije},frame=single, label=simple]
+Znajući ovo, vrlo lako možemo dokazati korektnost programa koji koriste liste uz pomoć matematičke indukcije, gde bi nam baza indukcije bila slučaj prazne liste, a induktivni korak rekurzivni poziv liste čijom dekonstrukcijom dobijamo izolovani element, kao i listu za koju smo pretpostavili da važi induktivna hipoteza.
+\begin{primer}
+Primer rekurzivno definisane funkcije:
+\end{primer}
+\begin{lstlisting}[language=Haskell,frame=single, label=simple]
 sum :: [Int] -> Int
 -- baza indukcije
 sum [] = 0
@@ -104,7 +110,7 @@ GHCi debager nam omogućava da u željenim momentima zaustavimo program i prover
 
 
 \subsection{Tačke zaustavljanja i inspekcija varijabli}
-Iako je moguće zaustaviti program na bilo kom izrazu odnosno liniji radi inspekcije varijabli, nije moguće proveriti tip i vrednost varijabli koje već nisu izračunate. Ovo je posledica činjenice da se u Haskel-u ne vrši zaključivanje tipova tokom izvršavanja programa. Naravno, uvek je moguće forsirati dedukcije tipa, odnosno naterati program da nastavi izvršavanje taman toliko da usko odredi sa kojim tipom podataka se radi. Problem kod ovog pristupa se javlja u slučajevima kada bismo u bloku koda koji treba da se izvrši da bismo dobili definitni tip željene promenljive postoji ugnježdena tačka zaustavljanja, što uništava linearnost inspekcije i debagovanja koda. 
+Iako je moguće zaustaviti program na bilo kom izrazu odnosno liniji radi inspekcije varijabli, nije moguće proveriti tip i vrednost varijabli koje već nisu izračunate. Ovo je posledica činjenice da se u Haskel-u ne vrši zaključivanje tipova tokom izvršavanja programa. Naravno, uvek je moguće forsirati dedukcije tipa, odnosno naterati program da nastavi izvršavanje taman toliko da usko odredi sa kojim tipom podataka se radi. Problem kod ovog pristupa se javlja u slučajevima kada bismo u bloku k\^{o}da koji treba da se izvrši da bismo dobili definitni tip željene promenljive postoji ugnježdena tačka zaustavljanja, što uništava linearnost inspekcije i debagovanja k\^{o}da. 
 
 Posledice ovog problema se mogu amortizovati uvođenjem parcijalnog izračuvanja tipa izraza, umesto izračunavanja vrednosti celog izraza. Kao i uvodjenje posebne komande za ispisivanje jos neevaluiranih vrednosti, ovo je vrlo korisno s obzirom da svaki tip pre nego što može konvencionalno da se ispisuje mora da ima implementiranu funckiju za prikazivanje (eng. {\em show}). Neevaluirane vrednosti Haskel rešava uvođenjem {\em obećanja} (eng. {\em thunk}), koje se uvek koriste pri lenjom izračunavanju. Nedostatak ove implementacije je to što bilo koji izraz koji se lenjo odseče i ne izračuna se do kraja (na primer desna strana izraza konjukcije gde je prvi argument{\em False}), što znači da ni obećanje koje se nalazilo u odsečenom delu izraza nikada neće biti evaluirano.\cite{lipovaca2011learn} 
 
@@ -127,7 +133,7 @@ Nažalost, usled zastarelosti biblioteka koje koristi alat Het, autori rada nisu
 %TODO: najveća mana Heta to što nije podržan u novijim verzijama. manjak dokumentacije ga čini nepristupačnim itd.
 
 Alat Het pruža programeru uvid u detalje izračunavanja pri izvršavanju Haskel programa korišćenjem {\em tragača} (eng. {\em tracer}). 
-Koristeći se informacijama koje generiše {\em tragač} moguće je locirati greške u našem kodu (ukoliko takvih ima).
+Koristeći se informacijama koje generiše {\em tragač} moguće je locirati greške u našem k\^{o}du (ukoliko takvih ima).
 Sleđenje {\em tragova} izračunavanja u Hetu se sastoji iz dve faze: prva je {\em ostavljanje traga} (eng. {\em trace generation}), a druga je {\em pregledanje traga} (eng. {\em trace viewing}) \cite{chitil2002transforming}.
 
 \subsection{Ostavljanje traga}
