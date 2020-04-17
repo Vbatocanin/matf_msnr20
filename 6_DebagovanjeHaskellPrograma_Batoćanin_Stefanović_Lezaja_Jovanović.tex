@@ -132,7 +132,10 @@ Ovaj alat nije deo nekog prevodioca ili interpretatora za programski jezik Haske
 % izmena u sledećoj rečenici: da se nužno smatra --> nužno da se smatra
 što se moglo smatrati prednošću u vremenu kada su se koristili različiti prevodioci za Haskel programski jezik, pa samo njegovo postojanje i održavanje nije bilo tesno vezano za postojanje i održavanje nekog specifičnog prevodioca, odnosno interpretatora \cite{chitil2002transforming}. Međutim danas, u vremenu kada je {\em GHC} ({\em GHC -- Glasgow Haskell Compiler}) najpristupačniji Haskel prevodilac, ta osobina Heta ne mora nužno da se smatra prednošću, uzimajući u obzir da se sa konstantnim izlaskom novih verzija {\em GHC}-a javlja potreba za konstantnim održavanjem.
 U ovom radu naglasak će biti na korišćenju alata Het kao debagera, no on može da se koristi i u svrhe posmatranja kako funkcioniše korektno napisan Haskel program \cite{wallace2001multiple}.
-Nažalost, usled zastarelosti biblioteka koje koristi alat Het, autori rada nisu uspeli da osposobe alat na svojim mašinama nakon više pokušaja. 
+Nažalost, usled zastarelosti biblioteka koje koristi alat Het, autori rada nisu uspeli da osposobe alat na svojim mašinama nakon više pokušaja.
+Ova situacija nije začuđujuća, uzimajući u obzir da je još 2008. godine Berni Poup (eng. {\em Bernie Pope}) u svom radu rekao sledeće: 
+``Het nudi nekoliko moćnih alata koji obuhvataju različite stilove debagovanja, ali je praćen negativnim uticajem na performanse, pritom nije dobro integrisan sa 
+opšteprihvaćenim programerskim okruženjem ({\em GHC}), čime otežava njegovu upotrebu'' \cite{pope2008step}.
 %TODO: ovde bi trebalo dodati rečenicu koja naglašava da debagovanje u Haskelu samim tim nije bas ``najudobnije'', makar sto se tice Heta 
 %TODO: najveća mana Heta to što nije podržan u novijim verzijama. manjak dokumentacije ga čini nepristupačnim itd.
 
@@ -450,7 +453,7 @@ Nakon što pozovemo bilo koju funkciju i ona se izvrši, ona zahvaljujući debug
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[scale=0.4]{mitchell-browser-pregled.png}
+\includegraphics[scale=0.35]{mitchell-browser-pregled.png}
 \caption{Prozor Debug-a nakon primene countGreater1st}
 \end{center}
 \end{figure}
@@ -459,7 +462,7 @@ Za svaku od levo navedenih funkcija koje predstavljaju call stack ovog programa 
 Primetićemo da prvi primer radi kako treba, tj vraća 8 elemenata većih od prvog.
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[scale=0.3]{mitchell-browser-pregled'.png}
+\includegraphics[scale=0.25]{mitchell-browser-pregled'.png}
 \caption{Prozor Debug-a nakon primene countGreater1st'}
 \end{center}
 \end{figure}
@@ -470,7 +473,7 @@ Kad je drugi element veći od prvog, mi rekurzivno pozivamo funkciju sa listom b
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[scale=0.3]{mitchell-browser-pregled''.png}
+\includegraphics[scale=0.25]{mitchell-browser-pregled''.png}
 \caption{Prozor Debug-a nakon primene countGreater1st'', izabrali smo drugi poziv da pogledamo}
 \end{center}
 \end{figure}
