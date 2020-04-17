@@ -142,6 +142,16 @@ U fazi {\em ostavljanja traga} se pokreće program koji treba da se debaguje tak
 potrebno ga je prvo transformisati korišćenjem alata koji se sadrži u Hetu pod nazivom {\em hat-trans}. U tom procesu se naš Haskel program transformiše u
 Haskel program koji se prevodi i povezuje (eng. {\em linking}) sa odgovarajućim bibliotekama koje pruža Het \cite{chitil2002transforming}. Tako transformisan program se prevodi i pokreće,
 pri čemu transformisan program radi isto što i originalni program, uz dodatak da ispisuje {\em trag} u određenu datoteku. % Primećujemo nekoliko razlika u odnosu na ostale debagere.
+Grafički prikaz korišćenja alata {\em hat-trans} prikazan je na slici \ref{fig:hat-trans}.
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.55]{hat-trans_graf.png}
+\end{center}
+\caption{Ostavljanje traga u Hetu}
+\label{fig:hat-trans}
+\end{figure}
+
 Jedna od razlika koja se javlja kod Heta u odnosu na neke druge debagere je ta da je uloga transformisanja izvornog koda prepuštena računaru, tj. da je programer oslobođen od dodavanja novog koda u cilju debagovanja, kao što to imamo kod Hud (eng. {\em Hood}) debagera ubacivanjem {\em observe} ključne reči.
 % izmenjena rečenica
 Ta osobina alata Het se može smatrati vrlinom, obzirom da je cilj debagovanja da bude što ``bezbolniji'', kako po originalni izvorni kod, 
