@@ -1,5 +1,5 @@
 % !TEX encoding = UTF-8 Unicode
-\documentclass[a4paper]{article}
+\documentclass[10pt]{extarticle}
 
 \usepackage{color}
 \usepackage{url}
@@ -86,16 +86,16 @@ Izuzetak je strukturalni stil programiranja, koji propagira da se programi pišu
 Za Haskel se veoma lako nalazi analogon na formalno matematičkom jeziku, zbog toga što strukturni dizajn implementira do na strukture podataka. Pošto su one vrlo temeljno definisane, moguće je indukcijom uopštiti program od baznog slučaja ka mnogo kompleksnijim. Ovo nam dozvoljava da već u fazi inicijalnog pisanja k\^{o}da dokažemo da je naš program matematički korektan. U ovom kontekstu se najčešće koristi metod {\em struktruralne indukcije}  (eng.~{\em structural induction}). Ovo je moguće isključivo zbog rekurzivno definisanih struktura podataka u Haskelu, pri čemu se koristi operator | (ili) koji u prevodu na formalni matematički jezik predstavlja uniju skupova\cite{craftOfFuncProg}
 \newpage
 \begin{primer}
-Rekurzivno definisanje liste u Haskelu:
+Rekurzivno definisanje liste u Haskelu dat je u listingu \ref{code1}.
 \end{primer}
-\begin{lstlisting}[language=Haskell,frame=single, label=simple]
+\begin{lstlisting}[language=Haskell,frame=single, label=code1,caption={Rekurzivno definisanje liste u Haskelu}]
 data Lista x = PraznaLista | Cons a (Lista x)
 \end{lstlisting}
-Znajući ovo, vrlo lako možemo dokazati korektnost programa koji koriste liste uz pomoć matematičke indukcije, gde bi nam baza indukcije bila slučaj prazne liste, a induktivni korak rekurzivni poziv liste čijom dekonstrukcijom dobijamo izolovani element, kao i listu za koju smo pretpostavili da važi induktivna hipoteza.
+Znajući ovo, vrlo lako možemo dokazati korektnost programa koji koriste liste uz pomoć matematičke indukcije, gde bi nam .
 \begin{primer}
-Primer rekurzivno definisane funkcije:
+Primer funkcije koja radi sa listama čija korektnost se može dokazati matematičkom indukcijom dat je u listingu \ref{code2}. Za baza indukcije uzimamo slučaj prazne liste, a za induktivni korak rekurzivni poziv liste čijom dekonstrukcijom dobijamo izolovani element, kao i listu za koju znamo da važi induktivna hipoteza
 \end{primer}
-\begin{lstlisting}[language=Haskell,frame=single, label=simple]
+\begin{lstlisting}[language=Haskell,caption={Primer rekurzivno definisane funkcije},frame=single, label=code2]
 sum :: [Int] -> Int
 -- baza indukcije
 sum [] = 0
@@ -103,13 +103,16 @@ sum [] = 0
 -- induktivni korak dodavanja jednog elementa x na xs
 sum (x:xs) = x + sum xs 
 \end{lstlisting}
-
+Iako su Haskel programi teoretski dokazivi, taj proces kod kompleksnih programa je i dalje skoro nemoguć, zbog čega se koriste konvencionalni debageri, od kojih je najpoznatiji GHCi Debager.
 
 \section{GHCi Debager}
+
+GHCi Debager je već integrisan u istoimeni interpretator odnosno kompajler, što znači da za korišćenje istog nije potrebna nikakva dodatna instalacija. Pre svega se mora napomenuti da se GHCi Debager ne može koristiti uvek. Ovo je zbog toga što sam GHCi ima dva režima kompilacije, prvi koji generiše bajt kod,i drugi koji generiše objektne datotetke koje treba samo linkovati naknadno. Debagovanje je moguće samo u slučaju kada se kod prevodi u bajt kod, ali je zbog toga i deset puta sporije izvršavanje samog programa. Ova karakteristika se najčešće koristi tako što se bagoviti delovi koda prevode u bajt kod, dok se robusne biblioteke prevode u objektne datoteke radi poboljšanja performansi\cite{pope2008step}.
+
+\subsection{Tačke zaustavljanja i inspekcija varijabli}
 GHCi debager nam omogućava da u željenim momentima zaustavimo program i proverimo vrednosti pojedinačnih promenljivih preko {\em tačaka zaustavljanja} (eng.~{\em breakpoints}). Takodje vrlo bitna funkcionalnost je korak po korak izvršavanje programa sa zaustavljanjem. Izuzetak od ove funkcionalnosti su vec prekompilirane biblioteke u koje nije moguće ući u okviru međukoraka.
 
 
-\subsection{Tačke zaustavljanja i inspekcija varijabli}
 Iako je moguće zaustaviti program na bilo kom izrazu odnosno liniji radi inspekcije varijabli, nije moguće proveriti tip i vrednost varijabli koje već nisu izračunate. Ovo je posledica činjenice da se u Haskel-u ne vrši zaključivanje tipova tokom izvršavanja programa. Naravno, uvek je moguće forsirati dedukcije tipa, odnosno naterati program da nastavi izvršavanje taman toliko da usko odredi sa kojim tipom podataka se radi. Problem kod ovog pristupa se javlja u slučajevima kada bismo u bloku k\^{o}da koji treba da se izvrši da bismo dobili definitni tip željene promenljive postoji ugnježdena tačka zaustavljanja, što uništava linearnost inspekcije i debagovanja k\^{o}da. 
 
 Posledice ovog problema se mogu amortizovati uvođenjem parcijalnog izračuvanja tipa izraza, umesto izračunavanja vrednosti celog izraza. Kao i uvodjenje posebne komande za ispisivanje jos neevaluiranih vrednosti, ovo je vrlo korisno s obzirom da svaki tip pre nego što može konvencionalno da se ispisuje mora da ima implementiranu funckiju za prikazivanje (eng. {\em show}). Neevaluirane vrednosti Haskel rešava uvođenjem {\em obećanja} (eng. {\em thunk}), koje se uvek koriste pri lenjom izračunavanju. Nedostatak ove implementacije je to što bilo koji izraz koji se lenjo odseče i ne izračuna se do kraja (na primer desna strana izraza konjukcije gde je prvi argument{\em False}), što znači da ni obećanje koje se nalazilo u odsečenom delu izraza nikada neće biti evaluirano.\cite{lipovaca2011learn} 
